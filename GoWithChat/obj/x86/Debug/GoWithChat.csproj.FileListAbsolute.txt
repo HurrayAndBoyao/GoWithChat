@@ -5,3 +5,10 @@ C:\Users\Hurray\Desktop\git\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Prope
 C:\Users\Hurray\Desktop\git\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache
 C:\Users\Hurray\Desktop\git\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
 C:\Users\Hurray\Desktop\git\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\GoWithChat.exe
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\GoWithChat.pdb
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Landed.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Properties.Resources.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache

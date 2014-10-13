@@ -23,7 +23,7 @@ namespace GoWithChat
 
         private void bt_landed_Click(object sender, EventArgs e)
         {
-            if (tb_username.Text != null && tb_passwd.Text != null)
+            if (!string.IsNullOrEmpty(tb_username.Text) && !string.IsNullOrEmpty(tb_passwd.Text))
             {
                 Form fm_Server = new Server();
                 fm_Server.Show();
