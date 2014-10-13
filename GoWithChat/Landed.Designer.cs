@@ -77,6 +77,7 @@
             this.bt_server.TabIndex = 4;
             this.bt_server.Text = "服务器";
             this.bt_server.UseVisualStyleBackColor = true;
+            this.bt_server.Click += new System.EventHandler(this.bt_server_Click);
             // 
             // bt_landed
             // 

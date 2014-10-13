@@ -12,3 +12,7 @@ C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\GoWithChat.pdb
 C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Landed.resources
 C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Properties.Resources.resources
 C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Server.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.xml
