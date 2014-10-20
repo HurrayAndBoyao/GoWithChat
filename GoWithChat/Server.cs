@@ -23,7 +23,7 @@ namespace GoWithChat
 
         public void bt_start_Click(object sender, EventArgs e)
         {
-            servermanager = new ServerManager(int.Parse(tb_port.Text));
+            servermanager = new ServerManager(int.Parse(tb_port.Text), tb_output);
         }
     }
 }

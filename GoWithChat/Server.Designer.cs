@@ -31,7 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tb_port = new System.Windows.Forms.TextBox();
             this.bt_start = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.tb_output = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -60,21 +60,22 @@
             this.bt_start.UseVisualStyleBackColor = true;
             this.bt_start.Click += new System.EventHandler(this.bt_start_Click);
             // 
-            // richTextBox1
+            // tb_output
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(49, 84);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(426, 270);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
+            this.tb_output.Location = new System.Drawing.Point(49, 84);
+            this.tb_output.Name = "tb_output";
+            this.tb_output.ReadOnly = true;
+            this.tb_output.Size = new System.Drawing.Size(426, 270);
+            this.tb_output.TabIndex = 3;
+            this.tb_output.Text = "";
+           // this.tb_output.TextChanged += new System.EventHandler(this.tb_output_TextChanged);
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 404);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.tb_output);
             this.Controls.Add(this.bt_start);
             this.Controls.Add(this.tb_port);
             this.Controls.Add(this.label1);
@@ -90,6 +91,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tb_port;
         private System.Windows.Forms.Button bt_start;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox tb_output;
     }
 }
