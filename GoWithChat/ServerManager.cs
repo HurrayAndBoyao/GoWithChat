@@ -9,16 +9,18 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Text;
 using System.IO;
+using System.Collections; //使用Hashtable时，必须引入这个命名空间 
 
 namespace GoWithChat
 {
     public class ServerManager
     {
-        public event Action<string> ConsoleOutput;
+        //public event Action<string> ConsoleOutput;
         public int port { get; set; }
         public bool IsWorking { get; private set; }
         public TcpListener tcpListener;
         public RichTextBox tb_output;
+        public Hashtable hash;
 
         public ServerManager(int port, RichTextBox tb_output)
         {
@@ -47,6 +49,9 @@ namespace GoWithChat
             Control.CheckForIllegalCrossThreadCalls = false;
             listenThread.Start();
             tb_output.AppendText("接听开始\n");
+            Hashtable hash = new Hashtable(); //创建一个Hashtable实例 
+            tb_output.AppendText("建立HashMap\n");
+            this.hash = hash;
 
         }
 
@@ -57,21 +62,49 @@ namespace GoWithChat
                 try
                 {
                     TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                    
-                    tb_output.AppendText(tcpClient.Client.RemoteEndPoint.ToString()+"\n");
-                    NetworkStream stream = tcpClient.GetStream();
-
-                    Byte[] data = new Byte[256];
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                    tb_output.AppendText(responseData + "!\n");
-
-
+                    hash.Add("test",tcpClient);
+                    tb_output.AppendText(tcpClient.Client.RemoteEndPoint.ToString()+"\n");//连接检测
+                    receiveMsg("test");
+                    sendMsg("test","hello Hurray!");
                 }
-                catch
+                catch (Exception e)
                 {
-                    tb_output.AppendText("error\n");
+                    tb_output.AppendText("error:"+e+"\n");
                 }
+            }
+        }
+
+        public Boolean landed(TcpClient tcpClient)
+        {
+            NetworkStream stream = tcpClient.GetStream();
+            Byte[] data = new Byte[256];
+            Int32 bytes = stream.Read(data, 0, data.Length);
+            String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            tb_output.AppendText(responseData + "!\n");
+            return true;
+        }
+
+        public void receiveMsg(String name)
+        {
+            NetworkStream stream = ((TcpClient)hash[name]).GetStream();
+            Byte[] data = new Byte[256];
+            Int32 bytes = stream.Read(data, 0, data.Length);
+            String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            tb_output.AppendText(responseData + "!\n");
+        }
+
+        public Boolean sendMsg(String name, String msg)
+        {
+            if (hash.Contains(name))
+            {
+                NetworkStream stream = ((TcpClient)hash[name]).GetStream();
+                Byte[] bytes = Encoding.UTF8.GetBytes(msg);
+                stream.Write(bytes, 0, bytes.Length);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

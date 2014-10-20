@@ -14,6 +14,9 @@ namespace GoWithChat
 {
     public partial class ClientDemo : Form
     {
+        public TcpClient tcpClient;
+        public NetworkStream stream;
+
         public ClientDemo()
         {
             InitializeComponent();
@@ -21,14 +24,32 @@ namespace GoWithChat
 
         private void bt_connect_Click(object sender, EventArgs e)
         {
-            TcpClient tcpClient = new TcpClient();
+
+
+            this.tcpClient = new TcpClient();
             tcpClient.Connect(IPAddress.Parse(tb_ip.Text),Int32.Parse(tb_port.Text));
-            NetworkStream stream = tcpClient.GetStream();
+            this.stream = tcpClient.GetStream();
+
+            sendMessage("nihao");
+            receiveMsg();
 
             
+        }
 
-            Byte[] bytes = Encoding.UTF8.GetBytes("zzzzaaaa");
+        public void receiveMsg()
+        {
+            Byte[] data = new Byte[256];
+            Int32 bytes = stream.Read(data, 0, data.Length);
+            String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            tb_output.AppendText(responseData + "!\n");
+        }
+
+        public void sendMessage(String msg)
+        {
+
+            Byte[] bytes = Encoding.UTF8.GetBytes(msg);
             stream.Write(bytes, 0, bytes.Length);
+            
         }
     }
 }
