@@ -35,6 +35,7 @@
             this.bt_server = new System.Windows.Forms.Button();
             this.bt_landed = new System.Windows.Forms.Button();
             this.bt_reg = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lb_username
@@ -98,11 +99,22 @@
             this.bt_reg.Text = "注册";
             this.bt_reg.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(252, 193);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Landed
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(394, 302);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.bt_reg);
             this.Controls.Add(this.bt_landed);
             this.Controls.Add(this.bt_server);
@@ -127,6 +139,7 @@
         private System.Windows.Forms.Button bt_server;
         private System.Windows.Forms.Button bt_landed;
         private System.Windows.Forms.Button bt_reg;
+        private System.Windows.Forms.Button button1;
     }
 }
 

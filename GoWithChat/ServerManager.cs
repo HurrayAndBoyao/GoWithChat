@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using System.Threading;
+using System.Text;
+using System.IO;
 
 namespace GoWithChat
 {
@@ -54,13 +56,21 @@ namespace GoWithChat
             {
                 try
                 {
-                    TcpClient incomingClient = tcpListener.AcceptTcpClient();
-                    //Client client = new Client(incomingClient);
-                    tb_output.AppendText(incomingClient.Client.RemoteEndPoint.ToString()+"\n");
+                    TcpClient tcpClient = tcpListener.AcceptTcpClient();
+                    
+                    tb_output.AppendText(tcpClient.Client.RemoteEndPoint.ToString()+"\n");
+                    NetworkStream stream = tcpClient.GetStream();
+
+                    Byte[] data = new Byte[256];
+                    Int32 bytes = stream.Read(data, 0, data.Length);
+                    String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    tb_output.AppendText(responseData + "!\n");
+
+
                 }
                 catch
                 {
-                    tb_output.AppendText("eeeeee");
+                    tb_output.AppendText("error\n");
                 }
             }
         }

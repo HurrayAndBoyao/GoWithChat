@@ -39,5 +39,11 @@ namespace GoWithChat
             fm_Server.Show();
             this.Hide();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ClientDemo clientDemo = new ClientDemo();
+            clientDemo.Show();
+        }
     }
 }
