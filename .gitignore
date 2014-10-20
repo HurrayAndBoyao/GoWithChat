@@ -1,0 +1,4 @@
+GowithChat/bin/Debug/*
+GowithChat/obj/*
+*.pbd
+*.exe
