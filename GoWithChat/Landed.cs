@@ -25,7 +25,8 @@ namespace GoWithChat
         {
             if (!string.IsNullOrEmpty(tb_username.Text) && !string.IsNullOrEmpty(tb_passwd.Text))
             {
-                
+                Board board = new Board();
+                board.Show();
             }
             else
             {

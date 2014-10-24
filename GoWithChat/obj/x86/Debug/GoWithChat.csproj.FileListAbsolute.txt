@@ -18,3 +18,14 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\GoWithChat.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\GoWithChat.pdb
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.xml
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\bin\Debug\GoWithChat.exe
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\bin\Debug\GoWithChat.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.dll
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.xml
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.ClientDemo.resources
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Landed.resources
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Properties.Resources.resources
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache

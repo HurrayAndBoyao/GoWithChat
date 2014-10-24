@@ -5,3 +5,11 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.d
 C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\obj\Debug\JsonTest.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\obj\Debug\JsonTest.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\JsonTest.exe.config
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\obj\Debug\JsonTest.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\JsonTest.exe
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\JsonTest.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.dll
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.xml
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\obj\Debug\JsonTest.csprojResolveAssemblyReference.cache
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\obj\Debug\JsonTest.exe
