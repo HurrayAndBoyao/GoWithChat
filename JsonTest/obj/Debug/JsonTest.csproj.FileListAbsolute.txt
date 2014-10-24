@@ -1,0 +1,7 @@
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\JsonTest.exe.config
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\JsonTest.exe
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\JsonTest.pdb
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\obj\Debug\JsonTest.exe
+C:\Users\Hurray\Documents\GitHub\GoWithChat\JsonTest\obj\Debug\JsonTest.pdb

@@ -24,22 +24,23 @@ namespace GoWithChat
 
         private void bt_connect_Click(object sender, EventArgs e)
         {
-
-
+            MsgBundle bundle = new MsgBundle();
+            bundle.username = "Hurray";
+            bundle.passwd = "123";
+            //bundle.FightMsg = "haha";
+            
+            string getJson = JsonConvert.SerializeObject(bundle);
+            
             this.tcpClient = new TcpClient();
             tcpClient.Connect(IPAddress.Parse(tb_ip.Text),Int32.Parse(tb_port.Text));
             this.stream = tcpClient.GetStream();
 
-            sendMessage("nihao");
+            sendMessage(getJson);
             receiveMsg();
+            
+            
 
             
-            MsgBundle bundle = new MsgBundle();
-            bundle.username = "Hurray";
-            bundle.passwd = "123";
-            bundle.fightInfo = "haha";
-            string getJson = JsonConvert.SerializeObject(bundle);
-            printToConsole(getJson);
             
             
         }
