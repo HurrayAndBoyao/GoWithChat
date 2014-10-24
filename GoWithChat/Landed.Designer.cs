@@ -32,7 +32,6 @@
             this.lb_passwd = new System.Windows.Forms.Label();
             this.tb_username = new System.Windows.Forms.TextBox();
             this.tb_passwd = new System.Windows.Forms.TextBox();
-            this.bt_server = new System.Windows.Forms.Button();
             this.bt_landed = new System.Windows.Forms.Button();
             this.bt_reg = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -70,16 +69,6 @@
             this.tb_passwd.Size = new System.Drawing.Size(142, 21);
             this.tb_passwd.TabIndex = 3;
             // 
-            // bt_server
-            // 
-            this.bt_server.Location = new System.Drawing.Point(63, 248);
-            this.bt_server.Name = "bt_server";
-            this.bt_server.Size = new System.Drawing.Size(75, 23);
-            this.bt_server.TabIndex = 4;
-            this.bt_server.Text = "服务器";
-            this.bt_server.UseVisualStyleBackColor = true;
-            this.bt_server.Click += new System.EventHandler(this.bt_server_Click);
-            // 
             // bt_landed
             // 
             this.bt_landed.Location = new System.Drawing.Point(274, 248);
@@ -101,11 +90,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(252, 193);
+            this.button1.Location = new System.Drawing.Point(63, 248);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
+            this.button1.Text = "通信demo";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -117,7 +106,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.bt_reg);
             this.Controls.Add(this.bt_landed);
-            this.Controls.Add(this.bt_server);
             this.Controls.Add(this.tb_passwd);
             this.Controls.Add(this.tb_username);
             this.Controls.Add(this.lb_passwd);
@@ -136,7 +124,6 @@
         private System.Windows.Forms.Label lb_passwd;
         private System.Windows.Forms.TextBox tb_username;
         private System.Windows.Forms.TextBox tb_passwd;
-        private System.Windows.Forms.Button bt_server;
         private System.Windows.Forms.Button bt_landed;
         private System.Windows.Forms.Button bt_reg;
         private System.Windows.Forms.Button button1;

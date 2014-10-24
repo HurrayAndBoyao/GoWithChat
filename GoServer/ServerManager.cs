@@ -6,12 +6,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
-using System.Threading;
 using System.Text;
 using System.IO;
 using System.Collections; //使用Hashtable时，必须引入这个命名空间 
 
-namespace GoWithChat
+namespace GoServer
 {
     public class ServerManager
     {

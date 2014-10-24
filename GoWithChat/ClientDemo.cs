@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
 
 namespace GoWithChat
 {
@@ -22,6 +17,11 @@ namespace GoWithChat
             InitializeComponent();
         }
 
+        public void printToConsole(String msg)
+        {
+            tb_output.AppendText(msg + "\n");        
+        }
+
         private void bt_connect_Click(object sender, EventArgs e)
         {
 
@@ -33,6 +33,14 @@ namespace GoWithChat
             sendMessage("nihao");
             receiveMsg();
 
+            
+            MsgBundle bundle = new MsgBundle();
+            bundle.username = "Hurray";
+            bundle.passwd = "123";
+            bundle.fightInfo = "haha";
+            string getJson = JsonConvert.SerializeObject(bundle);
+            printToConsole(getJson);
+            
             
         }
 

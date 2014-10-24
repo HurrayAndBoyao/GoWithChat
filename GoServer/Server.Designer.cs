@@ -1,4 +1,4 @@
-﻿namespace GoWithChat
+﻿namespace GoServer
 {
     partial class Server
     {

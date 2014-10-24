@@ -33,13 +33,6 @@ namespace GoWithChat
             }
         }
 
-        public void bt_server_Click(object sender, EventArgs e)
-        {
-            Form fm_Server = new Server();
-            fm_Server.Show();
-            this.Hide();
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             ClientDemo clientDemo = new ClientDemo();
