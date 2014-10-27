@@ -50,18 +50,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientDemo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ClientDemo.Designer.cs">
-      <DependentUpon>ClientDemo.cs</DependentUpon>
-    </Compile>
     <Compile Include="Board.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Board.Designer.cs">
       <DependentUpon>Board.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClientDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientDemo.Designer.cs">
+      <DependentUpon>ClientDemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientManager.cs" />
     <Compile Include="MsgBundle.cs" />
     <Compile Include="Landed.cs">
       <SubType>Form</SubType>

@@ -14,8 +14,8 @@ namespace GoWithChat
         public
         Unit[,] unit = new Unit[19, 19];//单元格数组
         static int step = 0;//表示当前步数
-        Image img_black = new Bitmap("images//black.png");
-        Image img_white = new Bitmap("images//white.png");
+        Image img_black = new Bitmap("../../resource/img/black.png");
+        Image img_white = new Bitmap("../../resource/img/white.png");
 
         public Board()
         {
