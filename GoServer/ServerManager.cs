@@ -44,6 +44,7 @@ namespace GoServer
             IsWorking = true;
             tcpListener.Start();
 
+
             Thread listenThread = new Thread(ListenThread);
             Control.CheckForIllegalCrossThreadCalls = false;
             listenThread.Start();
@@ -51,7 +52,6 @@ namespace GoServer
             Hashtable hash = new Hashtable(); //创建一个Hashtable实例 
             tb_output.AppendText("建立HashMap\n");
             this.hash = hash;
-
         }
 
         public void ListenThread()
@@ -61,10 +61,11 @@ namespace GoServer
                 try
                 {
                     TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                    hash.Add("test",tcpClient);
-                    tb_output.AppendText(tcpClient.Client.RemoteEndPoint.ToString()+"\n");//连接检测
-                    receiveMsg("test");
-                    sendMsg("test","hello Hurray!");
+                    //hash.Add("test",tcpClient);
+                    //tb_output.AppendText(tcpClient.Client.RemoteEndPoint.ToString()+"\n");//连接检测
+                    //receiveMsg("test");
+                    //sendMsg("test","hello Hurray!");
+                    receiveJsonAndAns(tcpClient);
                 }
                 catch (Exception e)
                 {
@@ -72,7 +73,7 @@ namespace GoServer
                 }
             }
         }
-
+        /*
         public Boolean landed(TcpClient tcpClient)
         {
             NetworkStream stream = tcpClient.GetStream();
@@ -82,14 +83,113 @@ namespace GoServer
             tb_output.AppendText(responseData + "!\n");
             return true;
         }
+         * */
 
-        public void receiveMsg(String name)
+        public void receiveJsonAndAns(TcpClient tcpclient)
+        {
+            String getJsonMsg = receiveMsg(tcpclient);
+            MsgBundle newbundle = JsonConvert.DeserializeObject<MsgBundle>(getJsonMsg);
+
+            switch (newbundle.type)
+            {
+                case R.CMD_LOGIN:
+                    login(newbundle, tcpclient); break;
+
+                case R.CMD_LOGOUT: 
+                    logout(newbundle, tcpclient); break;
+
+                case R.CMD_FIND_FRIEND: 
+                    findFriend(newbundle, tcpclient); break;
+
+                case R.CMD_APPLY_FIGHT:
+                    applyFight(newbundle, tcpclient); break;
+
+                case R.CMD_AGREE_FIGHT:
+                    agreeFight(newbundle, tcpclient); break;
+
+                case R.CMD_FIGHT:
+                    fight(newbundle, tcpclient); break;
+            }
+        }
+
+        private void fight(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void agreeFight(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void applyFight(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void findFriend(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void logout(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            MsgBundle returnBundle = new MsgBundle();
+            hash.Remove(newbundle.username);
+            returnBundle.type = R.CMD_LOGOUT;
+            returnBundle.status = R.STATUS_SUCCESS;
+            sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
+        }
+
+        private void login(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            if (hash.Contains(newbundle.username))
+            {
+                MsgBundle returnBundle = new MsgBundle();
+                returnBundle.type = R.CMD_LOGIN;
+                returnBundle.status = R.STATUS_FAILED;
+                returnBundle.note = R.NOTE_SAMENAME;
+                sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
+            }
+            else
+            {
+                if (newbundle.username.Equals(newbundle.passwd))
+                {
+                    MsgBundle returnBundle = new MsgBundle();
+                    returnBundle.type = R.CMD_LOGIN;
+                    returnBundle.status = R.STATUS_SUCCESS;
+                    hash.Add(newbundle.username, tcpclient);
+                    sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
+                }
+                else
+                {
+                    MsgBundle returnBundle = new MsgBundle();
+                    returnBundle.type = R.CMD_LOGIN;
+                    returnBundle.status = R.STATUS_FAILED;
+                    returnBundle.note = R.NOTE_ERROR_CODE;
+                    sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
+                }
+            }
+        }
+
+        public string receiveMsg(String name)
         {
             NetworkStream stream = ((TcpClient)hash[name]).GetStream();
             Byte[] data = new Byte[256];
             Int32 bytes = stream.Read(data, 0, data.Length);
             String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
             tb_output.AppendText(responseData + "!\n");
+            return responseData;
+        }
+
+        public string receiveMsg(TcpClient socket)
+        {
+            NetworkStream stream = socket.GetStream();
+            Byte[] data = new Byte[256];
+            Int32 bytes = stream.Read(data, 0, data.Length);
+            String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            tb_output.AppendText(responseData + "!\n");
+            return responseData;
         }
 
         public Boolean sendMsg(String name, String msg)
@@ -106,5 +206,22 @@ namespace GoServer
                 return false;
             }
         }
+
+        public Boolean sendMsg(TcpClient socket, String msg)
+        {
+            if (socket!=null)
+            {
+                NetworkStream stream = socket.GetStream();
+                Byte[] bytes = Encoding.UTF8.GetBytes(msg);
+                stream.Write(bytes, 0, bytes.Length);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
     }
 }
