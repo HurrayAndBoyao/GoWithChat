@@ -129,12 +129,7 @@ namespace GoServer
 
         private void findFriend(MsgBundle newbundle, TcpClient tcpclient)
         {
-            String [] friendArray = new String[hash.Count];
-            hash.Keys.CopyTo(friendArray, 0);
-            MsgBundle returnBundle = new MsgBundle();
-            returnBundle.type = R.CMD_FIND_FRIEND;
-            returnBundle.allOnlineName = friendArray;
-            sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
+            throw new NotImplementedException();
         }
 
         private void logout(MsgBundle newbundle, TcpClient tcpclient)

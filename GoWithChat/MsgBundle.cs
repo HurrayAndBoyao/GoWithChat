@@ -28,7 +28,6 @@ namespace GoWithChat
         public const string NOTE_SERVER_ERROR = "服务器错误！";
         public const string NOTE_ERROR_CODE = "密码错误（当前设置用户名和密码相同即可登录）";
         public const string NOTE_BLANK_CODEORPASSWD = "还没有输入用户名或密码！";
-        public const string NOTE_SERVER_UNCONNECT = "无法连接服务器！";
     }
 
     class MsgBundle

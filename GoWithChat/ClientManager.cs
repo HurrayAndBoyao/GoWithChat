@@ -14,37 +14,29 @@ namespace GoWithChat
 
         public bool Landed(String username, String passwd, Form landedForm)
         {
-            try
+            this.tcpClient = new TcpClient();
+            tcpClient.Connect(R.IPADDRESS , R.PORT);
+            this.stream = tcpClient.GetStream();
+
+            MsgBundle sendBundle = new MsgBundle();
+            sendBundle.type = R.CMD_LOGIN;
+            sendBundle.username = username;
+            sendBundle.passwd = passwd;
+            sendMessage(JsonConvert.SerializeObject(sendBundle));
+
+            String msg = receiveMsg();
+            MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+            if (receiveBundle.type == R.CMD_LOGIN && receiveBundle.status == R.STATUS_SUCCESS)
             {
-                this.tcpClient = new TcpClient();
-                tcpClient.Connect(R.IPADDRESS, R.PORT);
-                this.stream = tcpClient.GetStream();
-
-
-                MsgBundle sendBundle = new MsgBundle();
-                sendBundle.type = R.CMD_LOGIN;
-                sendBundle.username = username;
-                sendBundle.passwd = passwd;
-                sendMessage(JsonConvert.SerializeObject(sendBundle));
-
-                String msg = receiveMsg();
-                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                if (receiveBundle.type == R.CMD_LOGIN && receiveBundle.status == R.STATUS_SUCCESS)
-                {
-                    //登录成功
-                    MainForm mainform = new MainForm();
-                    mainform.Show();
-                    landedForm.Hide();
-                }
-                else
-                {
-                    Note newnote = new Note(R.NOTE_ERROR_CODE);
-                    newnote.Show();
-                }
+                //登录成功
+                MainForm mainform = new MainForm();
+                mainform.Show();
+                landedForm.Hide();
             }
-            catch (Exception e)
+            else
             {
-                new Note((R.NOTE_SERVER_UNCONNECT)).Show();
+                Note newnote = new Note(R.NOTE_ERROR_CODE);
+                newnote.Show();
             }
 
             return false;
