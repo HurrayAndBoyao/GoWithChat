@@ -78,7 +78,6 @@
             this.Controls.Add(this.tb_Note);
             this.Name = "Note";
             this.Text = "提醒";
-            this.Load += new System.EventHandler(this.Note_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

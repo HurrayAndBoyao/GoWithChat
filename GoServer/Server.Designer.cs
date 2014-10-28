@@ -32,7 +32,6 @@
             this.tb_port = new System.Windows.Forms.TextBox();
             this.bt_start = new System.Windows.Forms.Button();
             this.tb_output = new System.Windows.Forms.RichTextBox();
-            this.bt_exitserver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -53,7 +52,7 @@
             // 
             // bt_start
             // 
-            this.bt_start.Location = new System.Drawing.Point(382, 24);
+            this.bt_start.Location = new System.Drawing.Point(382, 25);
             this.bt_start.Name = "bt_start";
             this.bt_start.Size = new System.Drawing.Size(75, 23);
             this.bt_start.TabIndex = 2;
@@ -69,30 +68,19 @@
             this.tb_output.Size = new System.Drawing.Size(426, 270);
             this.tb_output.TabIndex = 3;
             this.tb_output.Text = "";
-            // 
-            // bt_exitserver
-            // 
-            this.bt_exitserver.Location = new System.Drawing.Point(264, 24);
-            this.bt_exitserver.Name = "bt_exitserver";
-            this.bt_exitserver.Size = new System.Drawing.Size(75, 23);
-            this.bt_exitserver.TabIndex = 4;
-            this.bt_exitserver.Text = "关闭服务器";
-            this.bt_exitserver.UseVisualStyleBackColor = true;
-            this.bt_exitserver.Click += new System.EventHandler(this.bt_exitserver_Click);
+           // this.tb_output.TextChanged += new System.EventHandler(this.tb_output_TextChanged);
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 404);
-            this.Controls.Add(this.bt_exitserver);
             this.Controls.Add(this.tb_output);
             this.Controls.Add(this.bt_start);
             this.Controls.Add(this.tb_port);
             this.Controls.Add(this.label1);
             this.Name = "Server";
             this.Text = "Server";
-            this.Load += new System.EventHandler(this.Server_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -104,6 +92,5 @@
         private System.Windows.Forms.TextBox tb_port;
         private System.Windows.Forms.Button bt_start;
         private System.Windows.Forms.RichTextBox tb_output;
-        private System.Windows.Forms.Button bt_exitserver;
     }
 }
