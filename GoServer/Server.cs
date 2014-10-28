@@ -15,30 +15,15 @@ namespace GoServer
         public Server()
         {
             InitializeComponent();
-            this.FormClosing += new FormClosingEventHandler(Server_FormClosing);
         }
 
-        private void Server_FormClosing(Object sender, FormClosingEventArgs e)
-        {
-            servermanager.ExitServer();
-            Application.ExitThread();
-        }
+        
 
         public ServerManager servermanager;
 
         public void bt_start_Click(object sender, EventArgs e)
         {
             servermanager = new ServerManager(int.Parse(tb_port.Text), tb_output);
-        }
-
-        private void bt_exitserver_Click(object sender, EventArgs e)
-        {
-            servermanager.ExitServer(); 
-        }
-
-        private void Server_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
