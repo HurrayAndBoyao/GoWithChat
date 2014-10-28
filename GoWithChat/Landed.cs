@@ -25,11 +25,12 @@ namespace GoWithChat
         {
             if (!string.IsNullOrEmpty(tb_username.Text) && !string.IsNullOrEmpty(tb_passwd.Text))
             {
-               
+                ClientManager clientmanager = new ClientManager();
+                clientmanager.Landed(tb_username.Text, tb_passwd.Text, this);//登录成功的话登录页面自动隐藏
             }
             else
             {
-                
+                new Note(R.NOTE_BLANK_CODEORPASSWD).Show();
             }
         }
 

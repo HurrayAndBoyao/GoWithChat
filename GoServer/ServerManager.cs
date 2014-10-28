@@ -178,7 +178,7 @@ namespace GoServer
             Byte[] data = new Byte[256];
             Int32 bytes = stream.Read(data, 0, data.Length);
             String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            tb_output.AppendText(responseData + "!\n");
+            tb_output.AppendText("【接收】"+responseData + "\n");
             return responseData;
         }
 
@@ -188,7 +188,7 @@ namespace GoServer
             Byte[] data = new Byte[256];
             Int32 bytes = stream.Read(data, 0, data.Length);
             String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            tb_output.AppendText(responseData + "!\n");
+            tb_output.AppendText("【接收】" + responseData + "\n");
             return responseData;
         }
 
@@ -199,6 +199,7 @@ namespace GoServer
                 NetworkStream stream = ((TcpClient)hash[name]).GetStream();
                 Byte[] bytes = Encoding.UTF8.GetBytes(msg);
                 stream.Write(bytes, 0, bytes.Length);
+                tb_output.AppendText("【发送】" + msg + "\n");
                 return true;
             }
             else
@@ -214,6 +215,7 @@ namespace GoServer
                 NetworkStream stream = socket.GetStream();
                 Byte[] bytes = Encoding.UTF8.GetBytes(msg);
                 stream.Write(bytes, 0, bytes.Length);
+                tb_output.AppendText("【发送】" + msg + "\n");
                 return true;
             }
             else

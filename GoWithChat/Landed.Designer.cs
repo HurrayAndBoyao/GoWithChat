@@ -101,11 +101,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(274, 193);
+            this.button2.Location = new System.Drawing.Point(201, 196);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(148, 23);
             this.button2.TabIndex = 8;
-            this.button2.Text = "button2";
+            this.button2.Text = "跳转棋盘(博耀测试用)";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
