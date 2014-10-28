@@ -22,5 +22,10 @@ namespace GoWithChat
             this.Dispose();
         }
 
+        private void Note_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

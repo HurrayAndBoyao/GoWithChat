@@ -31,3 +31,16 @@ D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\De
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Note.resources
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.MainForm.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\GoWithChat.exe
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\GoWithChat.pdb
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.ClientDemo.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Landed.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.MainForm.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Note.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Properties.Resources.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache
+C:\Users\Hurray\Downloads\GoWithChat-old_master\GoWithChat-old_master\GoWithChat\obj\x86\Debug\GoWithChat.exe
+C:\Users\Hurray\Downloads\GoWithChat-old_master\GoWithChat-old_master\GoWithChat\obj\x86\Debug\GoWithChat.pdb

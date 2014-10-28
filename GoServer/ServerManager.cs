@@ -29,6 +29,11 @@ namespace GoServer
             StartServer();
         }
 
+        public void ExitServer()
+        {
+            tcpListener.Stop();
+        }
+
         public void StartServer()
         {
             try
@@ -61,11 +66,8 @@ namespace GoServer
                 try
                 {
                     TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                    //hash.Add("test",tcpClient);
-                    //tb_output.AppendText(tcpClient.Client.RemoteEndPoint.ToString()+"\n");//连接检测
-                    //receiveMsg("test");
-                    //sendMsg("test","hello Hurray!");
-                    receiveJsonAndAns(tcpClient);
+                    tb_output.AppendText("一个新用户接入\n");
+                    new Thread(() => UserThread(tcpClient)).Start();
                 }
                 catch (Exception e)
                 {
@@ -84,6 +86,21 @@ namespace GoServer
             return true;
         }
          * */
+
+        public void UserThread(TcpClient tcpClient)
+        {
+            while (true)
+            {
+                try
+                {
+                    receiveJsonAndAns(tcpClient);
+                }
+                catch (Exception ex)
+                {
+                    tb_output.AppendText(ex.ToString());
+                }
+            }
+        }
 
         public void receiveJsonAndAns(TcpClient tcpclient)
         {
@@ -129,7 +146,12 @@ namespace GoServer
 
         private void findFriend(MsgBundle newbundle, TcpClient tcpclient)
         {
-            throw new NotImplementedException();
+            String [] friendArray = new String[hash.Count];
+            hash.Keys.CopyTo(friendArray, 0);
+            MsgBundle returnBundle = new MsgBundle();
+            returnBundle.type = R.CMD_FIND_FRIEND;
+            returnBundle.allOnlineName = friendArray;
+            sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
         }
 
         private void logout(MsgBundle newbundle, TcpClient tcpclient)

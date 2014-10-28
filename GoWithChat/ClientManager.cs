@@ -14,29 +14,52 @@ namespace GoWithChat
 
         public bool Landed(String username, String passwd, Form landedForm)
         {
-            this.tcpClient = new TcpClient();
-            tcpClient.Connect(R.IPADDRESS , R.PORT);
-            this.stream = tcpClient.GetStream();
-
-            MsgBundle sendBundle = new MsgBundle();
-            sendBundle.type = R.CMD_LOGIN;
-            sendBundle.username = username;
-            sendBundle.passwd = passwd;
-            sendMessage(JsonConvert.SerializeObject(sendBundle));
-
-            String msg = receiveMsg();
-            MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-            if (receiveBundle.type == R.CMD_LOGIN && receiveBundle.status == R.STATUS_SUCCESS)
+            try
             {
-                //登录成功
-                MainForm mainform = new MainForm();
-                mainform.Show();
-                landedForm.Hide();
+                this.tcpClient = new TcpClient();
+                tcpClient.Connect(R.IPADDRESS, R.PORT);
+                this.stream = tcpClient.GetStream();
+
+
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_LOGIN;
+                sendBundle.username = username;
+                sendBundle.passwd = passwd;
+                sendMessage(JsonConvert.SerializeObject(sendBundle));
+
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                if (receiveBundle.type == R.CMD_LOGIN && receiveBundle.status == R.STATUS_SUCCESS)
+                {
+                    //登录成功
+                    MainForm mainform = new MainForm();
+                    mainform.Show();
+                    landedForm.Hide();
+                }
+                else
+                {
+                    String note;
+                    switch(receiveBundle.note)
+                    {
+                        case R.NOTE_ERROR_CODE: 
+                            note = R.MSG_ERROR_CODE; break;
+
+                        case R.NOTE_SERVER_ERROR:
+                            note = R.MSG_SERVER_ERROR; break;
+
+                        case R.NOTE_SAMENAME:
+                            note = R.MSG_SAMENAME; break;
+
+                        default:
+                            note = R.MSG_UNKNOW_ERROR; break;
+
+                    }
+                    new Note(note).Show();
+                }
             }
-            else
+            catch (Exception e)
             {
-                Note newnote = new Note(R.NOTE_ERROR_CODE);
-                newnote.Show();
+                new Note(R.MSG_SERVER_UNCONNECT + e).Show();
             }
 
             return false;
