@@ -38,13 +38,28 @@ namespace GoWithChat
                 }
                 else
                 {
-                    Note newnote = new Note(R.NOTE_ERROR_CODE);
-                    newnote.Show();
+                    String note;
+                    switch(receiveBundle.note)
+                    {
+                        case R.NOTE_ERROR_CODE: 
+                            note = R.MSG_ERROR_CODE; break;
+
+                        case R.NOTE_SERVER_ERROR:
+                            note = R.MSG_SERVER_ERROR; break;
+
+                        case R.NOTE_SAMENAME:
+                            note = R.MSG_SAMENAME; break;
+
+                        default:
+                            note = R.MSG_UNKNOW_ERROR; break;
+
+                    }
+                    new Note(note).Show();
                 }
             }
             catch (Exception e)
             {
-                new Note((R.NOTE_SERVER_UNCONNECT)).Show();
+                new Note(R.MSG_SERVER_UNCONNECT + e).Show();
             }
 
             return false;

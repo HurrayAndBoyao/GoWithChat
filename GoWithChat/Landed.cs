@@ -32,7 +32,7 @@ namespace GoWithChat
             }
             else
             {
-                new Note(R.NOTE_BLANK_CODEORPASSWD).Show();
+                new Note(R.MSG_BLANK_CODEORPASSWD).Show();
             }
         }
 

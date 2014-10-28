@@ -8,3 +8,13 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.Server.r
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.csproj.GenerateResource.Cache
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.pdb
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\bin\Debug\GoServer.exe.config
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\bin\Debug\GoServer.exe
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\bin\Debug\GoServer.pdb
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.Properties.Resources.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.Server.resources
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.csproj.GenerateResource.Cache
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.exe
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.pdb
