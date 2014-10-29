@@ -54,9 +54,8 @@ namespace GoServer
             Control.CheckForIllegalCrossThreadCalls = false;
             listenThread.Start();
             tb_output.AppendText("接听开始\n");
-            Hashtable hash = new Hashtable(); //创建一个Hashtable实例 
+            hash = new Hashtable(); //创建一个Hashtable实例 
             tb_output.AppendText("建立HashMap\n");
-            this.hash = hash;
         }
 
         public void ListenThread()
@@ -93,11 +92,27 @@ namespace GoServer
             {
                 try
                 {
+                    if (!tcpClient.Connected)
+                    {
+                        throw new Exception("啊啊啊");
+                    }
+
                     receiveJsonAndAns(tcpClient);
                 }
                 catch (Exception ex)
                 {
-                    tb_output.AppendText(ex.ToString());
+                    tb_output.AppendText("一个用户离线！\n");
+                    //清理hash
+                    foreach (DictionaryEntry de in hash)
+                    {
+                        if (de.Value == tcpClient)
+                        {
+                            hash.Remove(de.Key);
+                            tb_output.AppendText("成功删除用户登录信息！\n");
+                            break;
+                        }
+                    }
+                    break;
                 }
             }
         }

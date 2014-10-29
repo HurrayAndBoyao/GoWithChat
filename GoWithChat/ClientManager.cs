@@ -59,7 +59,7 @@ namespace GoWithChat
             }
             catch (Exception e)
             {
-                new Note(R.MSG_SERVER_UNCONNECT + e).Show();
+                new Note(R.MSG_SERVER_UNCONNECT).Show();
             }
 
             return false;
