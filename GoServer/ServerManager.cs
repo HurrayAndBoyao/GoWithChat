@@ -130,12 +130,48 @@ namespace GoServer
 
                 case R.CMD_FIGHT:
                     fight(newbundle, tcpclient); break;
+
+                case R.CMD_QUIT_FIGHT:
+                    quitFight(newbundle, tcpclient);break;
+            }
+        }
+
+        private void quitFight(MsgBundle newbundle, TcpClient tcpclient)
+        {
+            try
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_QUIT_FIGHT;
+                sendBundle.status = R.STATUS_SUCCESS;
+                sendBundle.username = newbundle.friendname;
+                sendBundle.friendname = newbundle.username;
+                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
+            }
+            catch
+            {
+                newbundle.status = R.STATUS_FAILED;
+                newbundle.note = R.NOTE_FRIEND_NOT_ONLINE;
+                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(newbundle));
             }
         }
 
         private void fight(MsgBundle newbundle, TcpClient tcpclient)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_FIGHT;
+                sendBundle.status = R.STATUS_SUCCESS;
+                sendBundle.username = newbundle.friendname;
+                sendBundle.friendname = newbundle.username;
+                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
+            }
+            catch
+            {
+                newbundle.status = R.STATUS_FAILED;
+                newbundle.note = R.NOTE_FRIEND_NOT_ONLINE;
+                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(newbundle));
+            }
         }
 
         private void agreeFight(MsgBundle newbundle, TcpClient tcpclient)
@@ -145,7 +181,21 @@ namespace GoServer
 
         private void applyFight(MsgBundle newbundle, TcpClient tcpclient)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_APPLY_FIGHT;
+                sendBundle.status = R.STATUS_SUCCESS;
+                sendBundle.username = newbundle.friendname;
+                sendBundle.friendname = newbundle.username;
+                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
+            }
+            catch
+            {
+                newbundle.status = R.STATUS_FAILED;
+                newbundle.note = R.NOTE_FRIEND_NOT_ONLINE;
+                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(newbundle));
+            }
         }
 
         private void findFriend(MsgBundle newbundle, TcpClient tcpclient)
@@ -175,7 +225,7 @@ namespace GoServer
                 MsgBundle returnBundle = new MsgBundle();
                 returnBundle.type = R.CMD_LOGIN;
                 returnBundle.status = R.STATUS_FAILED;
-                returnBundle.note = R.MSG_SAMENAME;
+                returnBundle.note = R.NOTE_SAMENAME;
                 sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
             }
             else
@@ -194,7 +244,7 @@ namespace GoServer
                     MsgBundle returnBundle = new MsgBundle();
                     returnBundle.type = R.CMD_LOGIN;
                     returnBundle.status = R.STATUS_FAILED;
-                    returnBundle.note = R.MSG_ERROR_CODE;
+                    returnBundle.note = R.NOTE_ERROR_CODE;
                     sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
                 }
             }
@@ -224,11 +274,19 @@ namespace GoServer
         {
             if (hash.Contains(name))
             {
-                NetworkStream stream = ((TcpClient)hash[name]).GetStream();
-                Byte[] bytes = Encoding.Unicode.GetBytes(msg);
-                stream.Write(bytes, 0, bytes.Length);
-                tb_output.AppendText("【发送】" + msg + "\n");
-                return true;
+                try
+                {
+                    NetworkStream stream = ((TcpClient)hash[name]).GetStream();
+                    Byte[] bytes = Encoding.Unicode.GetBytes(msg);
+                    stream.Write(bytes, 0, bytes.Length);
+                    tb_output.AppendText("【发送】" + msg + "\n");
+                    return true;
+                }
+                catch (Exception notonline)
+                {
+                    tb_output.AppendText("【exception】该用户不在线\n");
+                    return false;
+                }
             }
             else
             {
@@ -240,11 +298,19 @@ namespace GoServer
         {
             if (socket!=null)
             {
-                NetworkStream stream = socket.GetStream();
-                Byte[] bytes = Encoding.Unicode.GetBytes(msg);
-                stream.Write(bytes, 0, bytes.Length);
-                tb_output.AppendText("【发送】" + msg + "\n");
-                return true;
+                try
+                {
+                    NetworkStream stream = socket.GetStream();
+                    Byte[] bytes = Encoding.Unicode.GetBytes(msg);
+                    stream.Write(bytes, 0, bytes.Length);
+                    tb_output.AppendText("【发送】" + msg + "\n");
+                    return true;
+                }
+                catch (Exception notonline)
+                {
+                    tb_output.AppendText("【exception】该用户不在线\n");
+                    return false;
+                }
             }
             else
             {

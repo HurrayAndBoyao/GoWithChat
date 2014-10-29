@@ -19,3 +19,4 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.csproj.G
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.pdb
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.csprojResolveAssemblyReference.cache
+C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.csprojResolveAssemblyReference.cache

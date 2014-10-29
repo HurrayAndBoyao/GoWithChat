@@ -16,6 +16,8 @@ namespace GoWithChat
         public Form mainform;
         public Form landedForm;
         public Hashtable hash_form;
+        public String username;
+        public String[] friendList;
 
         public ClientManager()
         {
@@ -33,6 +35,8 @@ namespace GoWithChat
         public void Landed(String username, String passwd, Form landedForm)
         {
             this.landedForm = landedForm;
+            this.username = username;
+
             try
             {
                 this.tcpClient = new TcpClient();
@@ -57,6 +61,8 @@ namespace GoWithChat
                     //打开各线程
                     new Thread(ListenThread).Start();
                     new Thread(()=>getFriendList(mainform)).Start();
+                    new Thread(SwapOfflineFightThread).Start();
+                    //一会儿新建一个线程专门更新好友列表展示
                 }
                 else
                 {
@@ -66,7 +72,23 @@ namespace GoWithChat
             }
             catch (Exception e)
             {
-                new Note(R.MSG_SERVER_UNCONNECT + e).Show();
+                new Note(R.NOTE_SERVER_UNCONNECT + e).Show();
+            }
+        }
+
+        //清扫对方离线的对战
+        public void SwapOfflineFightThread()
+        {
+            ArrayList ar = new ArrayList();//实例化一个ArrayList
+            ar.AddRange(friendList);//把数组赋到Arraylist对象
+            foreach (string s in hash_form.Keys)
+            {
+                if (!ar.Contains(s))
+                {
+                    //【博耀】停止该board继续的方法调用
+                    new Note(R.NOTE_FRIEND_NOT_ONLINE_FIGHT_END).Show();
+                    hash_form.Remove(s);
+                }
             }
         }
 
@@ -80,7 +102,7 @@ namespace GoWithChat
                 // 更新好友列表
                 if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
                 {
-                    // 可以调用mainform，这里博耀来做一下，我不太擅长
+                    friendList = receiveBundle.allOnlineName;
                 }
                 // 开启对战窗口
                 else if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
@@ -92,7 +114,7 @@ namespace GoWithChat
                     }
                     else
                     {
-                        new Note(R.MSG_ALLREADY_START).Show();
+                        new Note(R.NOTE_ALLREADY_START).Show();
                     }
                    
                 }
@@ -109,9 +131,13 @@ namespace GoWithChat
             }
         }
 
-        public void ApplyFight(String friendName)
+        public void ApplyFight(String friendname)
         {
- 
+            MsgBundle sendBundle = new MsgBundle();
+            sendBundle.type = R.CMD_APPLY_FIGHT;
+            sendBundle.username = username;
+            sendBundle.friendname = friendname;
+            sendMessage(JsonConvert.SerializeObject(sendBundle));
         }
 
         public void getFriendList(Form mainform)
