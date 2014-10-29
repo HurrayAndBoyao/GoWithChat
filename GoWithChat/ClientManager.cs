@@ -62,11 +62,9 @@ namespace GoWithChat
                     new Thread(ListenThread).Start();
                     new Thread(()=>getFriendList(mainform)).Start();
                     new Thread(SwapOfflineFightThread).Start();
-                    //一会儿新建一个线程专门更新好友列表展示
                 }
                 else
                 {
-                    String note;
                     new Note(receiveBundle.note).Show();
                 }
             }
@@ -74,6 +72,13 @@ namespace GoWithChat
             {
                 new Note(R.NOTE_SERVER_UNCONNECT + e).Show();
             }
+        }
+
+        //【博耀】不断更新好友列表展示的线程
+        public void UpdateFriendListThread()
+        {
+            //好友列表string[] friendList直接调用
+            //展示界面是MainForm 直接调用mainform对象
         }
 
         //清扫对方离线的对战
@@ -85,7 +90,7 @@ namespace GoWithChat
             {
                 if (!ar.Contains(s))
                 {
-                    //【博耀】停止该board继续的方法调用
+                    //【博耀】停止该board继续的方法调用(可以考虑由联机版变单机版)
                     new Note(R.NOTE_FRIEND_NOT_ONLINE_FIGHT_END).Show();
                     hash_form.Remove(s);
                 }
@@ -103,6 +108,7 @@ namespace GoWithChat
                 if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
                 {
                     friendList = receiveBundle.allOnlineName;
+                    new Thread(UpdateFriendListThread).Start();
                 }
                 // 开启对战窗口
                 else if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
@@ -129,6 +135,16 @@ namespace GoWithChat
                 }
                 
             }
+        }
+
+        public void Fight(String fightInfo, String friendname)
+        {
+            MsgBundle sendBundle = new MsgBundle();
+            sendBundle.type = R.CMD_FIGHT;
+            sendBundle.username = username;
+            sendBundle.friendname = friendname;
+            sendBundle.fightInfo = fightInfo;
+            sendMessage(JsonConvert.SerializeObject(sendBundle));
         }
 
         public void ApplyFight(String friendname)
