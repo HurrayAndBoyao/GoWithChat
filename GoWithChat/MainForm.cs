@@ -11,9 +11,16 @@ namespace GoWithChat
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        public ClientManager clientManager;
+        public MainForm(ClientManager clientManager)
         {
-            InitializeComponent();
+            this.clientManager = clientManager;
+            InitializeComponent();           
+        }
+
+        public void button1_Click(object sender, EventArgs e)
+        {
+            clientManager.getFriendList();
         }
     }
 }

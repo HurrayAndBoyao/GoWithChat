@@ -40,12 +40,13 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "刷新列表";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // UserList
             // 
             this.UserList.FormattingEnabled = true;
             this.UserList.ItemHeight = 12;
-            this.UserList.Location = new System.Drawing.Point(-3, 2);
+            this.UserList.Location = new System.Drawing.Point(-2, -1);
             this.UserList.Name = "UserList";
             this.UserList.Size = new System.Drawing.Size(208, 388);
             this.UserList.TabIndex = 1;

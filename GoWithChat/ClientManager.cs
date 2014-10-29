@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace GoWithChat
 {
-    class ClientManager
+    public class ClientManager
     {
         public TcpClient tcpClient;
         public NetworkStream stream;
@@ -32,7 +32,7 @@ namespace GoWithChat
                 if (receiveBundle.type == R.CMD_LOGIN && receiveBundle.status == R.STATUS_SUCCESS)
                 {
                     //登录成功
-                    MainForm mainform = new MainForm();
+                    MainForm mainform = new MainForm(this);
                     mainform.Show();
                     landedForm.Hide();
                 }
@@ -63,6 +63,22 @@ namespace GoWithChat
             }
 
             return false;
+        }
+
+        public string[] getFriendList()
+        {
+            MsgBundle sendBundle = new MsgBundle();
+            sendBundle.type = R.CMD_FIND_FRIEND;
+            sendMessage(JsonConvert.SerializeObject(sendBundle));
+
+            String msg = receiveMsg();
+            MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+            if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
+            {
+                return receiveBundle.allOnlineName;
+            }
+            else
+                return null;
         }
 
         public string receiveMsg()

@@ -165,6 +165,7 @@ namespace GoServer
             hash.Keys.CopyTo(friendArray, 0);
             MsgBundle returnBundle = new MsgBundle();
             returnBundle.type = R.CMD_FIND_FRIEND;
+            returnBundle.status = R.STATUS_SUCCESS;
             returnBundle.allOnlineName = friendArray;
             sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
         }
@@ -192,6 +193,7 @@ namespace GoServer
             {
                 if (newbundle.username.Equals(newbundle.passwd))
                 {
+                    //登录成功
                     MsgBundle returnBundle = new MsgBundle();
                     returnBundle.type = R.CMD_LOGIN;
                     returnBundle.status = R.STATUS_SUCCESS;
