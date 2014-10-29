@@ -30,6 +30,7 @@
         {
             this.bt_update = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            //this.bt_test = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bt_update
@@ -50,6 +51,7 @@
             this.panel1.TabIndex = 1;
             this.panel1.AutoScroll = true;
             this.panel1.VerticalScroll.Value = panel1.VerticalScroll.Maximum;
+
             // 
             // MainForm
             // 

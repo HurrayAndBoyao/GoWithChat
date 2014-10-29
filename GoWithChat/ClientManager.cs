@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections; //使用Hashtable时，必须引入这个命名空间 
 
 namespace GoWithChat
 {
@@ -14,6 +15,12 @@ namespace GoWithChat
         public NetworkStream stream;
         public Form mainform;
         public Form landedForm;
+        public Hashtable hash_form;
+
+        public ClientManager()
+        {
+            hash_form = new Hashtable();
+        }
 
         public void closeClient()
         {
@@ -54,22 +61,7 @@ namespace GoWithChat
                 else
                 {
                     String note;
-                    switch(receiveBundle.note)
-                    {
-                        case R.NOTE_ERROR_CODE: 
-                            note = R.MSG_ERROR_CODE; break;
-
-                        case R.NOTE_SERVER_ERROR:
-                            note = R.MSG_SERVER_ERROR; break;
-
-                        case R.NOTE_SAMENAME:
-                            note = R.MSG_SAMENAME; break;
-
-                        default:
-                            note = R.MSG_UNKNOW_ERROR; break;
-
-                    }
-                    new Note(note).Show();
+                    new Note(receiveBundle.note).Show();
                 }
             }
             catch (Exception e)
@@ -80,12 +72,46 @@ namespace GoWithChat
 
         public void ListenThread()
         {
-            /*
             while (true)
             {
- 
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+
+                // 更新好友列表
+                if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
+                {
+                    // 可以调用mainform，这里博耀来做一下，我不太擅长
+                }
+                // 开启对战窗口
+                else if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
+                {
+                    // 开启Form:Board（多人版）    , 记录form到HashTable中 
+                    if (!hash_form.Contains(receiveBundle.friendname))
+                    {
+                        //hash_form.Add(receiveBundle.friendname, (form));
+                    }
+                    else
+                    {
+                        new Note(R.MSG_ALLREADY_START).Show();
+                    }
+                   
+                }
+                else if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
+                {
+                    //根据hash_form找到对应的board对象，然后进行相应操作
+                }
+                else if (receiveBundle.type == R.CMD_FIGHT_CANCLE)
+                {
+                    //根据hash_form找到对应的board对象，然后将该页面改为单机版，并在hash_form中删除该对象，提示用户返回的note信息
+                    new Note(receiveBundle.note).Show();
+                }
+                
             }
-             * */
+        }
+
+        public void ApplyFight(String friendName)
+        {
+ 
         }
 
         public void getFriendList(Form mainform)
@@ -95,13 +121,6 @@ namespace GoWithChat
                 MsgBundle sendBundle = new MsgBundle();
                 sendBundle.type = R.CMD_FIND_FRIEND;
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
-
-                String msg = receiveMsg();
-                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
-                {
-                    //更新好友表
-                }
 
                 //5秒刷新一次
                 Thread.Sleep(5000);
@@ -113,15 +132,7 @@ namespace GoWithChat
             MsgBundle sendBundle = new MsgBundle();
             sendBundle.type = R.CMD_APPLY_FIGHT;
             sendBundle.friendname = friendName;
-            sendMessage(JsonConvert.SerializeObject(sendBundle));
-
-            String msg = receiveMsg();
-            MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-            if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
-            {
-                //开启对战窗口
-            }
-
+            sendMessage(JsonConvert.SerializeObject(sendBundle));            
         }
 
         public string receiveMsg()
@@ -135,17 +146,14 @@ namespace GoWithChat
 
         public void sendMessage(String msg)
         {
-
             Byte[] bytes = Encoding.Unicode.GetBytes(msg);
             stream.Write(bytes, 0, bytes.Length);
-
         }
 
         public void showNote(String note)
         {
             Note newnote = new Note(note);
             newnote.Show();
-
         }
     }
 }

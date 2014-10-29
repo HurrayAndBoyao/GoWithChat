@@ -175,7 +175,7 @@ namespace GoServer
                 MsgBundle returnBundle = new MsgBundle();
                 returnBundle.type = R.CMD_LOGIN;
                 returnBundle.status = R.STATUS_FAILED;
-                returnBundle.note = R.NOTE_SAMENAME;
+                returnBundle.note = R.MSG_SAMENAME;
                 sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
             }
             else
@@ -194,7 +194,7 @@ namespace GoServer
                     MsgBundle returnBundle = new MsgBundle();
                     returnBundle.type = R.CMD_LOGIN;
                     returnBundle.status = R.STATUS_FAILED;
-                    returnBundle.note = R.NOTE_ERROR_CODE;
+                    returnBundle.note = R.MSG_ERROR_CODE;
                     sendMsg(tcpclient, JsonConvert.SerializeObject(returnBundle));
                 }
             }
