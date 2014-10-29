@@ -69,7 +69,7 @@ namespace GoWithChat
         {
             Byte[] data = new Byte[256];
             Int32 bytes = stream.Read(data, 0, data.Length);
-            String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            String responseData = System.Text.Encoding.Unicode.GetString(data, 0, bytes);
             //tb_output.AppendText(responseData + "!\n");
             return responseData;
         }
@@ -77,7 +77,7 @@ namespace GoWithChat
         public void sendMessage(String msg)
         {
 
-            Byte[] bytes = Encoding.UTF8.GetBytes(msg);
+            Byte[] bytes = Encoding.Unicode.GetBytes(msg);
             stream.Write(bytes, 0, bytes.Length);
 
         }
