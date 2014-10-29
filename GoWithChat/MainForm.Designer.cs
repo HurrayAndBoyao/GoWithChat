@@ -48,6 +48,8 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(182, 375);
             this.panel1.TabIndex = 1;
+            this.panel1.AutoScroll = true;
+            this.panel1.VerticalScroll.Value = panel1.VerticalScroll.Maximum;
             // 
             // MainForm
             // 

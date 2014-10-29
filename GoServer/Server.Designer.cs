@@ -32,7 +32,7 @@
             this.tb_port = new System.Windows.Forms.TextBox();
             this.bt_start = new System.Windows.Forms.Button();
             this.tb_output = new System.Windows.Forms.RichTextBox();
-            this.bt_exitserver = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -70,22 +70,21 @@
             this.tb_output.TabIndex = 3;
             this.tb_output.Text = "";
             // 
-            // bt_exitserver
+            // label2
             // 
-            this.bt_exitserver.Location = new System.Drawing.Point(264, 24);
-            this.bt_exitserver.Name = "bt_exitserver";
-            this.bt_exitserver.Size = new System.Drawing.Size(75, 23);
-            this.bt_exitserver.TabIndex = 4;
-            this.bt_exitserver.Text = "关闭服务器";
-            this.bt_exitserver.UseVisualStyleBackColor = true;
-            this.bt_exitserver.Click += new System.EventHandler(this.bt_exitserver_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(178, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(113, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "（默认端口为1212）";
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 404);
-            this.Controls.Add(this.bt_exitserver);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.tb_output);
             this.Controls.Add(this.bt_start);
             this.Controls.Add(this.tb_port);
@@ -104,6 +103,6 @@
         private System.Windows.Forms.TextBox tb_port;
         private System.Windows.Forms.Button bt_start;
         private System.Windows.Forms.RichTextBox tb_output;
-        private System.Windows.Forms.Button bt_exitserver;
+        private System.Windows.Forms.Label label2;
     }
 }

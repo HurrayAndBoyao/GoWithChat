@@ -19,6 +19,8 @@ namespace GoWithChat
         {
             tcpClient.Close();
             landedForm.Close();
+            Application.ExitThread();
+            Application.Exit();
         }
 
         public void Landed(String username, String passwd, Form landedForm)

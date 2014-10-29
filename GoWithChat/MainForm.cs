@@ -24,6 +24,7 @@ namespace GoWithChat
         {
             clientManager.closeClient();
             Application.ExitThread();
+            Application.Exit();
         }
 
         public void button1_Click(object sender, EventArgs e)

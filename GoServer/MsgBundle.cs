@@ -8,6 +8,8 @@ namespace GoServer
     static class R
     {
         //res
+        public const String IPADDRESS = "127.0.0.1";
+        public const int PORT = 1212;
         public const int MAX_BUFFER_NUM = 9999;
 
 

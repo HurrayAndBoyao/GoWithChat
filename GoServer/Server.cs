@@ -28,7 +28,14 @@ namespace GoServer
 
         public void bt_start_Click(object sender, EventArgs e)
         {
-            servermanager = new ServerManager(int.Parse(tb_port.Text), tb_output);
+            try
+            {
+                servermanager = new ServerManager(int.Parse(tb_port.Text), tb_output);
+            }
+            catch (Exception ex)
+            {
+                servermanager = new ServerManager(R.PORT, tb_output);
+            }
         }
 
         private void bt_exitserver_Click(object sender, EventArgs e)
