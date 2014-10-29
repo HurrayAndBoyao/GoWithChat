@@ -7,6 +7,10 @@ namespace GoServer
 {
     static class R
     {
+        //res
+        public const int MAX_BUFFER_NUM = 9999;
+
+
         //type
         public const int CMD_LOGIN = 1001;//登录
         public const int CMD_LOGOUT = 1002;//注销
@@ -42,5 +46,6 @@ namespace GoServer
         public string msg { get; set; }
         public string[] allOnlineName { get; set; }
         public int note { get; set; }
+        public string friendname { get; set; }
     }
 }

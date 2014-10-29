@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace GoWithChat
 {
@@ -11,9 +12,18 @@ namespace GoWithChat
     {
         public TcpClient tcpClient;
         public NetworkStream stream;
+        public Form mainform;
+        public Form landedForm;
 
-        public bool Landed(String username, String passwd, Form landedForm)
+        public void closeClient()
         {
+            tcpClient.Close();
+            landedForm.Close();
+        }
+
+        public void Landed(String username, String passwd, Form landedForm)
+        {
+            this.landedForm = landedForm;
             try
             {
                 this.tcpClient = new TcpClient();
@@ -32,9 +42,12 @@ namespace GoWithChat
                 if (receiveBundle.type == R.CMD_LOGIN && receiveBundle.status == R.STATUS_SUCCESS)
                 {
                     //登录成功
-                    MainForm mainform = new MainForm(this);
+                    mainform = new MainForm(this);
                     mainform.Show();
                     landedForm.Hide();
+                    //打开各线程
+                    new Thread(ListenThread).Start();
+                    new Thread(()=>getFriendList(mainform)).Start();
                 }
                 else
                 {
@@ -59,31 +72,59 @@ namespace GoWithChat
             }
             catch (Exception e)
             {
-                new Note(R.MSG_SERVER_UNCONNECT).Show();
+                new Note(R.MSG_SERVER_UNCONNECT + e).Show();
             }
-
-            return false;
         }
 
-        public string[] getFriendList()
+        public void ListenThread()
+        {
+            /*
+            while (true)
+            {
+ 
+            }
+             * */
+        }
+
+        public void getFriendList(Form mainform)
+        {
+            while (true)
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_FIND_FRIEND;
+                sendMessage(JsonConvert.SerializeObject(sendBundle));
+
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
+                {
+                    //更新好友表
+                }
+
+                //5秒刷新一次
+                Thread.Sleep(5000);
+            }
+        }
+
+        public void BeginFight(String friendName)
         {
             MsgBundle sendBundle = new MsgBundle();
-            sendBundle.type = R.CMD_FIND_FRIEND;
+            sendBundle.type = R.CMD_APPLY_FIGHT;
+            sendBundle.friendname = friendName;
             sendMessage(JsonConvert.SerializeObject(sendBundle));
 
             String msg = receiveMsg();
             MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-            if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
+            if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
             {
-                return receiveBundle.allOnlineName;
+                //开启对战窗口
             }
-            else
-                return null;
+
         }
 
         public string receiveMsg()
         {
-            Byte[] data = new Byte[256];
+            Byte[] data = new Byte[R.MAX_BUFFER_NUM];
             Int32 bytes = stream.Read(data, 0, data.Length);
             String responseData = System.Text.Encoding.Unicode.GetString(data, 0, bytes);
             //tb_output.AppendText(responseData + "!\n");

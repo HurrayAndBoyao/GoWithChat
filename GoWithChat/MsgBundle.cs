@@ -10,6 +10,7 @@ namespace GoWithChat
         //res
         public const String IPADDRESS = "127.0.0.1";
         public const int PORT = 1212;
+        public const int MAX_BUFFER_NUM = 9999;
 
         //type
         public const int CMD_LOGIN = 1001;//登录
@@ -48,5 +49,6 @@ namespace GoWithChat
         public string msg { get; set; }
         public string[] allOnlineName { get; set; }
         public int note { get; set; }
+        public string friendname { get; set; }
     }
 }

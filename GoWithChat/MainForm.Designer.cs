@@ -28,36 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.UserList = new System.Windows.Forms.ListBox();
+            this.bt_update = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // button1
+            // bt_update
             // 
-            this.button1.Location = new System.Drawing.Point(56, 405);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "刷新列表";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bt_update.Location = new System.Drawing.Point(56, 405);
+            this.bt_update.Name = "bt_update";
+            this.bt_update.Size = new System.Drawing.Size(75, 23);
+            this.bt_update.TabIndex = 0;
+            this.bt_update.Text = "刷新列表";
+            this.bt_update.UseVisualStyleBackColor = true;
+            this.bt_update.Click += new System.EventHandler(this.button1_Click);
             // 
-            // UserList
+            // panel1
             // 
-            this.UserList.FormattingEnabled = true;
-            this.UserList.ItemHeight = 12;
-            this.UserList.Location = new System.Drawing.Point(-2, -1);
-            this.UserList.Name = "UserList";
-            this.UserList.Size = new System.Drawing.Size(208, 388);
-            this.UserList.TabIndex = 1;
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(182, 375);
+            this.panel1.TabIndex = 1;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(206, 440);
-            this.Controls.Add(this.UserList);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.bt_update);
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.ResumeLayout(false);
@@ -66,7 +64,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox UserList;
+        private System.Windows.Forms.Button bt_update;
+        private System.Windows.Forms.Panel panel1;
     }
 }

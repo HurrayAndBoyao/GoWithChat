@@ -12,15 +12,23 @@ namespace GoWithChat
     public partial class MainForm : Form
     {
         public ClientManager clientManager;
+        public String[] friendList;
         public MainForm(ClientManager clientManager)
         {
             this.clientManager = clientManager;
-            InitializeComponent();           
+            InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
+        }
+
+        private void MainForm_FormClosing(Object sender, FormClosingEventArgs e)
+        {
+            clientManager.closeClient();
+            Application.ExitThread();
         }
 
         public void button1_Click(object sender, EventArgs e)
         {
-            clientManager.getFriendList();
+            
         }
     }
 }

@@ -74,17 +74,6 @@ namespace GoServer
                 }
             }
         }
-        /*
-        public Boolean landed(TcpClient tcpClient)
-        {
-            NetworkStream stream = tcpClient.GetStream();
-            Byte[] data = new Byte[256];
-            Int32 bytes = stream.Read(data, 0, data.Length);
-            String responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            tb_output.AppendText(responseData + "!\n");
-            return true;
-        }
-         * */
 
         public void UserThread(TcpClient tcpClient)
         {
@@ -214,7 +203,7 @@ namespace GoServer
         public string receiveMsg(String name)
         {
             NetworkStream stream = ((TcpClient)hash[name]).GetStream();
-            Byte[] data = new Byte[256];
+            Byte[] data = new Byte[R.MAX_BUFFER_NUM];
             Int32 bytes = stream.Read(data, 0, data.Length);
             String responseData = System.Text.Encoding.Unicode.GetString(data, 0, bytes);
             tb_output.AppendText("【接收】"+responseData + "\n");
@@ -224,7 +213,7 @@ namespace GoServer
         public string receiveMsg(TcpClient socket)
         {
             NetworkStream stream = socket.GetStream();
-            Byte[] data = new Byte[256];
+            Byte[] data = new Byte[R.MAX_BUFFER_NUM];
             Int32 bytes = stream.Read(data, 0, data.Length);
             String responseData = System.Text.Encoding.Unicode.GetString(data, 0, bytes);
             tb_output.AppendText("【接收】" + responseData + "\n");

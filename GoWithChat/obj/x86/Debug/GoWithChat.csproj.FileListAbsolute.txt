@@ -56,3 +56,4 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
+C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
