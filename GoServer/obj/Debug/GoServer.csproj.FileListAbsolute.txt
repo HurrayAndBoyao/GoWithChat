@@ -19,3 +19,14 @@ C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.Server.resources
 C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.csproj.GenerateResource.Cache
 C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.exe
 C:\Users\Hurray\Desktop\GoWithChat\GoServer\obj\Debug\GoServer.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\GoServer.exe.config
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\GoServer.exe
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\GoServer.pdb
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\Newtonsoft.Json.dll
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\Newtonsoft.Json.xml
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\obj\Debug\GoServer.csprojResolveAssemblyReference.cache
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\obj\Debug\GoServer.Properties.Resources.resources
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\obj\Debug\GoServer.Server.resources
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\obj\Debug\GoServer.csproj.GenerateResource.Cache
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\obj\Debug\GoServer.exe
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\obj\Debug\GoServer.pdb

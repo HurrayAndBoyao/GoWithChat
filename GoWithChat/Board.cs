@@ -6,7 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+//与服务器端的交互接口如下：
+//1：构造函数，三个参数，第一个int为0表示单机，为1表示联机。
+//                       第二个int为0表示黑棋，为1表示白棋。
+//                       第三个是ClientManager的引用，用于传输消息，单机的话参数是0就好了。
+//2：发送消息：已经调用ClientManager的get_from_board(String s)方法，请在ClientManager里面编辑它，把消息原封不动发给另一个用户。
+//3：接收消息：Board类的public方法，get_from_server(String s)方法，请把另一个用户发送的消息原封不动地传到这里来。
 namespace GoWithChat
 {
     public partial class Board : Form
@@ -18,10 +23,15 @@ namespace GoWithChat
         Image img_black = new Bitmap("../../resource/img/black.png");
         Image img_white = new Bitmap("../../resource/img/white.png");
         Boolean[,] p = new Boolean[19, 19];//应用与dfs的一个布尔数组
+        int isonline, color;
+        ClientManager clientmanager;
 
-        public Board()
+        public Board(int isonline, int color,ClientManager clientmanager)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
         {
             int i, j;
+            this.isonline = isonline;
+            this.color = color;
+            this.clientmanager = clientmanager;
             InitializeComponent();
             this.SuspendLayout();
             for (i = 0; i < 19; i++)
@@ -110,6 +120,13 @@ namespace GoWithChat
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 9 * 23, 3, 3);
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 15 * 23, 3, 3);
         }
+        public void get_from_server(String s)//收取来自对手的消息
+        {
+            if (s[0] == '0')//下棋
+            {
+                go(s[1] - '0' + 9,s[2] - '0' + 9);
+            }
+        }
         private Point PointToGrid(int x, int y)
         {
             Point p = new Point(0, 0);
@@ -120,6 +137,15 @@ namespace GoWithChat
         private void MouseUpHandler(Object sender, MouseEventArgs e)
         {
             Point p;
+            String s;
+
+            if (isonline == 1)
+            {
+                if (color != (step % 2))
+                {
+                    return;
+                }
+            }
 
             p = PointToGrid(e.X, e.Y);
 
@@ -127,6 +153,11 @@ namespace GoWithChat
             {
                 if (go(p.X, p.Y) == 1)//如果此子可落
                 {
+                    if (isonline == 1)
+                    {
+                        s = "0" + (p.X - 9) + (p.Y - 9);
+                        clientmanager.get_from_board(s);//向服务器发送信息。
+                    }
                     step = step + 1;
                 } 
             }

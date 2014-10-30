@@ -13,8 +13,8 @@ namespace GoWithChat
     {
         public TcpClient tcpClient;
         public NetworkStream stream;
-        public Form mainform;
-        public Form landedForm;
+        public MainForm mainform;
+        public Landed landedForm;
         public Hashtable hash_form;
         public String username;
         public String[] friendList;
@@ -32,7 +32,7 @@ namespace GoWithChat
             Application.Exit();
         }
 
-        public void Landed(String username, String passwd, Form landedForm)
+        public void Landed(String username, String passwd, Landed landedForm)
         {
             this.landedForm = landedForm;
             this.username = username;
@@ -61,7 +61,6 @@ namespace GoWithChat
                     //打开各线程
                     new Thread(ListenThread).Start();
                     new Thread(()=>getFriendList(mainform)).Start();
-                    new Thread(SwapOfflineFightThread).Start();
                 }
                 else
                 {
@@ -85,7 +84,10 @@ namespace GoWithChat
         public void SwapOfflineFightThread()
         {
             ArrayList ar = new ArrayList();//实例化一个ArrayList
-            ar.AddRange(friendList);//把数组赋到Arraylist对象
+            if (friendList != null)
+            {
+                ar.AddRange(friendList);//把数组赋到Arraylist对象
+            }
             foreach (string s in hash_form.Keys)
             {
                 if (!ar.Contains(s))
@@ -109,6 +111,7 @@ namespace GoWithChat
                 {
                     friendList = receiveBundle.allOnlineName;
                     new Thread(UpdateFriendListThread).Start();
+                    new Thread(SwapOfflineFightThread).Start();
                 }
                 // 开启对战窗口
                 else if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
@@ -196,6 +199,10 @@ namespace GoWithChat
         {
             Note newnote = new Note(note);
             newnote.Show();
+        }
+        public void get_from_board(String s)
+        {
+            //收取来自棋盘的消息，请把String s传给对手
         }
     }
 }
