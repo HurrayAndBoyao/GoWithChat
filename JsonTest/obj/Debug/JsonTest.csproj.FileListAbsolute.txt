@@ -13,3 +13,4 @@ D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\Ne
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\bin\Debug\Newtonsoft.Json.xml
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\obj\Debug\JsonTest.csprojResolveAssemblyReference.cache
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\JsonTest\obj\Debug\JsonTest.exe
+D:\各种各样乱码七糟\C#项目\GoWithChat\JsonTest\obj\Debug\JsonTest.csprojResolveAssemblyReference.cache

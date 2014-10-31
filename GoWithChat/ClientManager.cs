@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Collections; //使用Hashtable时，必须引入这个命名空间 
+using System.Drawing;
 
 namespace GoWithChat
 {
@@ -74,17 +75,36 @@ namespace GoWithChat
         }
 
         //【博耀】不断更新好友列表展示的线程
-        public void UpdateFriendListThread()
+        public void UpdateFriendListThread()//博耀编辑
         {
-            //好友列表string[] friendList直接调用
-            //展示界面是MainForm 直接调用mainform对象
+            //int i;
+            //LinkLabel [] label = new LinkLabel [99];
+            //mainform.panel1.Controls.Clear();
+            //for (i = 0;i < ss.Length;i++)
+            //{//接下来的工作：通过代理实现跨线程调用控件。
+                //label[i] = new LinkLabel();
+            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            mainform.panel1.Invoke(new MainForm.Setlabels(Addlabels),new object[] {friendList});
+                //mainform.panel1.Controls.Add(label[i]);
+                //label[i].Links.Add(0,0,"" + i);
+                //label[i].ActiveLinkColor = Color.Blue;
+                //label[i].LinkBehavior = LinkBehavior.HoverUnderline;
+                //label[i].AutoEllipsis = true;
+                //label[i].AutoSize = false;
+                //label[i].Location = new System.Drawing.Point(15, 15 + 15 * i);
+                //label[i].Name = "label" + i;
+                //label[i].Size = new System.Drawing.Size(150, 15);
+                //label[i].TabIndex = 0;
+                //label[i].Text = ss[i];
+                //label[i].LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.label_Click);
+            //}
         }
 
         //清扫对方离线的对战
         public void SwapOfflineFightThread()
         {
             ArrayList ar = new ArrayList();//实例化一个ArrayList
-            if (friendList != null)
+            if (friendList.Length != 0)//博耀修改
             {
                 ar.AddRange(friendList);//把数组赋到Arraylist对象
             }
@@ -200,9 +220,38 @@ namespace GoWithChat
             Note newnote = new Note(note);
             newnote.Show();
         }
-        public void get_from_board(String s)
+        public void get_from_board(String s)//博耀添加
         {
             //收取来自棋盘的消息，请把String s传给对手
+        }
+        public void Addlabels(String[] friends)//博耀编辑,和控件委托相关的处理函数
+        {
+            int i;
+            LinkLabel[] label = new LinkLabel[99];
+            mainform.panel1.Controls.Clear();
+            for (i = 0; i < friends.Length; i++)
+            {
+                label[i] = new LinkLabel();
+                mainform.panel1.Controls.Add(label[i]);
+                label[i].Links.Add(0,0,friends[i]);
+                //label[i].ActiveLinkColor = Color.Blue;
+                //label[i].LinkColor = Color.Black;
+                label[i].LinkBehavior = LinkBehavior.HoverUnderline;
+                label[i].AutoEllipsis = true;
+                label[i].AutoSize = false;
+                label[i].Location = new System.Drawing.Point(15, 15 + 30 * i);
+                label[i].Name = "label" + i;
+                label[i].Size = new System.Drawing.Size(150, 30);
+                label[i].TabIndex = 0;
+                label[i].Text = friends[i];
+                label[i].Font = new Font("宋体",20);
+                label[i].LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.label_Click);
+            }
+        }
+        private void label_Click(object sender, LinkLabelLinkClickedEventArgs e)//博耀编辑
+        {
+            String name = e.Link.LinkData.ToString();//name就是选中的好友的名字
+            //泓睿接着写吧
         }
     }
 }

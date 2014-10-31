@@ -30,7 +30,6 @@
         {
             this.bt_update = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            //this.bt_test = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bt_update
@@ -45,13 +44,11 @@
             // 
             // panel1
             // 
+            this.panel1.AutoScroll = true;
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(182, 375);
             this.panel1.TabIndex = 1;
-            this.panel1.AutoScroll = true;
-            this.panel1.VerticalScroll.Value = panel1.VerticalScroll.Maximum;
-
             // 
             // MainForm
             // 
@@ -69,6 +66,6 @@
         #endregion
 
         private System.Windows.Forms.Button bt_update;
-        private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.Panel panel1;
     }
 }

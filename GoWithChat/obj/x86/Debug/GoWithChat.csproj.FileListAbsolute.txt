@@ -37,7 +37,6 @@ D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\bin\Debug\GoWithChat.
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\bin\Debug\GoWithChat.pdb
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.dll
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json.xml
-D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.ClientDemo.resources
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Landed.resources
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.MainForm.resources

@@ -13,6 +13,7 @@ namespace GoWithChat
     {
         public ClientManager clientManager;
         public String[] friendList;
+        public delegate void Setlabels(String [] friends);//博耀编辑，委托
         public MainForm(ClientManager clientManager)
         {
             this.clientManager = clientManager;
