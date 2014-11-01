@@ -13,7 +13,7 @@ namespace GoWithChat
         public const int MAX_BUFFER_NUM = 9999;
         public const int BLACK = 1;
         public const int WIGHT = 0;
-        public const int UPDATE_TIME = 50000;//刷新好友的时间间隔（毫秒）
+        public const int UPDATE_TIME = 5000;//刷新好友的时间间隔（毫秒）
 
         //type
         public const int CMD_LOGIN = 1001;//登录

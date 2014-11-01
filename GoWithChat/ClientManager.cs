@@ -19,9 +19,12 @@ namespace GoWithChat
         public Hashtable hash_form;
         public String username;
         public String[] friendList;
+        Board board;
 
         public ClientManager()
         {
+            board = new Board(0,0,null,null);
+            board.Hide();
             hash_form = new Hashtable();
         }
 
@@ -37,7 +40,6 @@ namespace GoWithChat
         {
             this.landedForm = landedForm;
             this.username = username;
-
             try
             {
                 this.tcpClient = new TcpClient();
@@ -124,9 +126,9 @@ namespace GoWithChat
         {
             while (true)
             {
+                //board.Show();
                 String msg = receiveMsg();
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-
                 //失败包
                 if (receiveBundle.status == R.STATUS_FAILED)
                 {
@@ -147,15 +149,14 @@ namespace GoWithChat
                 else if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
                 {
                     //根据hash_form找到对应的board对象，然后进行相应操作
-                    Board board = (Board)hash_form[receiveBundle.friendname];
-                    board.get_from_server(receiveBundle.fightInfo);
+                    //Board board = (Board)hash_form[receiveBundle.friendname];
+                    //board.get_from_server(receiveBundle.fightInfo);
                 }
                 else if (receiveBundle.type == R.CMD_FIGHT_CANCLE)
                 {
                     //根据hash_form找到对应的board对象，然后将该页面改为单机版，并在hash_form中删除该对象，提示用户返回的note信息
                     new Note(receiveBundle.note).Show();
                 }
-                
             }
         }
         public void openFightBoard(String friendname, int black)
@@ -172,9 +173,15 @@ namespace GoWithChat
                 }
                 else
                 {
-                    Board board = new Board(1, black, this, friendname);
-                    board.Show();
-                    hash_form.Add(friendname, board);
+                    //Board board = new Board(1, black, this, friendname);
+                    //Board board = new Board(0, 0, null, null);
+                    //board.isonline = 1;
+                    //board.color = black;
+                    //board.clientmanager = this;
+                    //board.friendname = friendname;
+                    //board.Show();
+                    //hash_form.Add(friendname, board);
+                    
                 }
             }
             catch(Exception e)
@@ -294,7 +301,6 @@ namespace GoWithChat
             {
                 new Note(R.NOTE_ALREADY_FIGHT).Show();
             }
-      
         }
     }
 }

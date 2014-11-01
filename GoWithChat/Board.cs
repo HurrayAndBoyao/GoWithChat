@@ -23,9 +23,9 @@ namespace GoWithChat
         Image img_black = new Bitmap("../../resource/img/black.png");
         Image img_white = new Bitmap("../../resource/img/white.png");
         Boolean[,] p = new Boolean[19, 19];//应用与dfs的一个布尔数组
-        int isonline, color;
-        ClientManager clientmanager;
-        String friendname;
+        public int isonline, color;
+        public ClientManager clientmanager;
+        public String friendname;
 
         public Board(int isonline, int color,ClientManager clientmanager,String friendname)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
         {
