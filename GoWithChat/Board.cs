@@ -25,13 +25,15 @@ namespace GoWithChat
         Boolean[,] p = new Boolean[19, 19];//应用与dfs的一个布尔数组
         int isonline, color;
         ClientManager clientmanager;
+        String friendname;
 
-        public Board(int isonline, int color,ClientManager clientmanager)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
+        public Board(int isonline, int color,ClientManager clientmanager,String friendname)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
         {
             int i, j;
             this.isonline = isonline;
             this.color = color;
             this.clientmanager = clientmanager;
+            this.friendname = friendname;
             InitializeComponent();
             this.SuspendLayout();
             for (i = 0; i < 19; i++)
@@ -74,6 +76,16 @@ namespace GoWithChat
             Pen penSide2 = new Pen(Color.Gray, 2);
             string[] strH = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" };
             string[] strV = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" };
+
+            if (step % 2 == 0)
+            {
+                textBox1.Text = "黑棋下棋";
+            }
+            else
+            {
+                textBox1.Text = "白棋下棋";
+            }
+
             g.DrawLine(penSide2, 458, 19, 458, 458);
             g.DrawLine(penSide2, 19, 458, 458, 458);
             g.DrawLine(penSide1, 19, 19, 458, 19);
@@ -156,7 +168,8 @@ namespace GoWithChat
                     if (isonline == 1)
                     {
                         s = "0" + (p.X - 9) + (p.Y - 9);
-                        clientmanager.get_from_board(s);//向服务器发送信息。
+                        clientmanager.get_from_board(s,friendname);//向服务器发送信息。
+                        //MessageBox.Show();
                     }
                     step = step + 1;
                 } 
@@ -187,7 +200,7 @@ namespace GoWithChat
                 pictureBox[x, y].Image = img_white;
             }
             pictureBox[x, y].Show();//显示这个棋子
-            if ((caneat / 1000) == 1)//待会儿要修改此处，没有考虑到双吃的情况。
+            if ((caneat / 1000) == 1)
             {
                 be_eaten(x - 1, y);
             }
@@ -379,6 +392,48 @@ namespace GoWithChat
                     }
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)//PASS
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)//悔棋
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)//求和
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)//点目
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)//聊天
+        {
+            String s;
+            if (isonline == 1)
+            {
+                MessageBox.Show("单机模式已禁用聊天功能！");
+                return;
+            }
+            if (textBox2.Text == "")
+            {
+                MessageBox.Show("聊天内容为空，无法发送！");
+                return;
+            }
+            s = "5" + textBox2.Text;
+            clientmanager.get_from_board(s,friendname);//向服务器发送信息。
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)//聊天内容
+        {
+
         }
     }
 

@@ -44,7 +44,7 @@ namespace GoWithChat
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Board board = new Board(0,0,null);
+            Board board = new Board(0,0,null,null);
             board.Show();
         }
     }

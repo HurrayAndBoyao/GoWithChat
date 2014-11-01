@@ -56,3 +56,5 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\bin\Debug\Newtonsoft.Json
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Board.resources
+D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache

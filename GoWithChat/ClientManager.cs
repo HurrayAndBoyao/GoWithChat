@@ -57,6 +57,7 @@ namespace GoWithChat
                 {
                     //登录成功
                     mainform = new MainForm(this);
+                    mainform.Text = username;
                     mainform.Show();
                     landedForm.Hide();
                     //打开各线程
@@ -139,7 +140,8 @@ namespace GoWithChat
                     // 开启Form:Board（多人版）    , 记录form到HashTable中 
                     if (!hash_form.Contains(receiveBundle.friendname))
                     {
-                        //hash_form.Add(receiveBundle.friendname, (form));
+                        Board board = new Board(1,1,this,receiveBundle.friendname);
+                        hash_form.Add(receiveBundle.friendname,board);
                     }
                     else
                     {
@@ -150,6 +152,8 @@ namespace GoWithChat
                 else if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
                 {
                     //根据hash_form找到对应的board对象，然后进行相应操作
+                    Board board = (Board)hash_form[receiveBundle.friendname];
+                    board.get_from_server(receiveBundle.fightInfo);
                 }
                 else if (receiveBundle.type == R.CMD_FIGHT_CANCLE)
                 {
@@ -188,7 +192,7 @@ namespace GoWithChat
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
 
                 //5秒刷新一次
-                Thread.Sleep(5000);
+                Thread.Sleep(50000);
             }
         }
 
@@ -220,9 +224,14 @@ namespace GoWithChat
             Note newnote = new Note(note);
             newnote.Show();
         }
-        public void get_from_board(String s)//博耀添加
+        public void get_from_board(String s,String friendname)//博耀添加
         {
-            //收取来自棋盘的消息，请把String s传给对手
+            MsgBundle sendBundle = new MsgBundle();
+            sendBundle.type = R.CMD_FIGHT;
+            sendBundle.username = username;
+            sendBundle.friendname = friendname;
+            sendBundle.fightInfo = s;
+            sendMessage(JsonConvert.SerializeObject(sendBundle));
         }
         public void Addlabels(String[] friends)//博耀编辑,和控件委托相关的处理函数
         {
@@ -251,7 +260,13 @@ namespace GoWithChat
         private void label_Click(object sender, LinkLabelLinkClickedEventArgs e)//博耀编辑
         {
             String name = e.Link.LinkData.ToString();//name就是选中的好友的名字
-            //泓睿接着写吧
+            Board board = new Board(1,0,this,name);
+            hash_form.Add(name,board);
+            MsgBundle sendBundle = new MsgBundle();
+            sendBundle.type = R.CMD_APPLY_FIGHT;
+            sendBundle.username = username;
+            sendBundle.friendname = name;
+            sendMessage(JsonConvert.SerializeObject(sendBundle));
         }
     }
 }
