@@ -11,6 +11,9 @@ namespace GoServer
         public const String IPADDRESS = "127.0.0.1";
         public const int PORT = 1212;
         public const int MAX_BUFFER_NUM = 9999;
+        public const int BLACK = 1;
+        public const int WIGHT = 0;
+        public const int UPDATE_TIME = 50000;//刷新好友的时间间隔（毫秒）
 
         //type
         public const int CMD_LOGIN = 1001;//登录
@@ -24,7 +27,7 @@ namespace GoServer
 
         //status
         public const int STATUS_SUCCESS = 1;
-        public const int STATUS_FAILED = 0;
+        public const int STATUS_FAILED = -1;
 
         //note
         public const string NOTE_SAMENAME = "已经有相同的用户名登陆！请重试其他用户名！";
@@ -36,6 +39,8 @@ namespace GoServer
         public const string NOTE_ALLREADY_START = "已经建立对战了，请勿重复操作！";
         public const string NOTE_FRIEND_NOT_ONLINE = "好友已经离线！";
         public const string NOTE_FRIEND_NOT_ONLINE_FIGHT_END = "好友已经离线！比赛结束！";
+        public const string NOTE_SELF_FIGHT = "不能和自己对战！";
+        public const string NOTE_ALREADY_FIGHT = "您已经和该好友在对战中了！";
     }
 
     class MsgBundle
@@ -49,5 +54,6 @@ namespace GoServer
         public string[] allOnlineName { get; set; }
         public string note { get; set; }
         public string friendname { get; set; }
+        public int isBlack { get; set; }
     }
 }

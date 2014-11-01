@@ -127,27 +127,22 @@ namespace GoWithChat
                 String msg = receiveMsg();
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
 
+                //失败包
+                if (receiveBundle.status == R.STATUS_FAILED)
+                {
+                    new Note(receiveBundle.note).Show();
+                }
                 // 更新好友列表
-                if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
+                else if (receiveBundle.type == R.CMD_FIND_FRIEND && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.allOnlineName != null)
                 {
                     friendList = receiveBundle.allOnlineName;
                     new Thread(UpdateFriendListThread).Start();
                     new Thread(SwapOfflineFightThread).Start();
                 }
-                // 开启对战窗口
+                // 申请对战
                 else if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
                 {
-                    // 开启Form:Board（多人版）    , 记录form到HashTable中 
-                    if (!hash_form.Contains(receiveBundle.friendname))
-                    {
-                        Board board = new Board(1,1,this,receiveBundle.friendname);
-                        hash_form.Add(receiveBundle.friendname,board);
-                    }
-                    else
-                    {
-                        new Note(R.NOTE_ALLREADY_START).Show();
-                    }
-                   
+                    openFightBoard(receiveBundle.friendname, receiveBundle.isBlack);
                 }
                 else if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.friendname != null)
                 {
@@ -161,6 +156,30 @@ namespace GoWithChat
                     new Note(receiveBundle.note).Show();
                 }
                 
+            }
+        }
+        public void openFightBoard(String friendname, int black)
+        {
+            try
+            {
+                if (hash_form.Contains(friendname))
+                {
+                    throw new Exception(R.NOTE_ALLREADY_START);
+                }
+                else if(friendname.Equals(username))
+                {
+                    throw new Exception(R.NOTE_SELF_FIGHT);
+                }
+                else
+                {
+                    Board board = new Board(1, black, this, friendname);
+                    board.Show();
+                    hash_form.Add(friendname, board);
+                }
+            }
+            catch(Exception e)
+            {
+                new Note(e.ToString()).Show(); 
             }
         }
 
@@ -192,7 +211,7 @@ namespace GoWithChat
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
 
                 //5秒刷新一次
-                Thread.Sleep(50000);
+                Thread.Sleep(R.UPDATE_TIME);
             }
         }
 
@@ -259,14 +278,23 @@ namespace GoWithChat
         }
         private void label_Click(object sender, LinkLabelLinkClickedEventArgs e)//博耀编辑
         {
+
+            
             String name = e.Link.LinkData.ToString();//name就是选中的好友的名字
-            Board board = new Board(1,0,this,name);
-            hash_form.Add(name,board);
-            MsgBundle sendBundle = new MsgBundle();
-            sendBundle.type = R.CMD_APPLY_FIGHT;
-            sendBundle.username = username;
-            sendBundle.friendname = name;
-            sendMessage(JsonConvert.SerializeObject(sendBundle));
+            if (!hash_form.Contains(name))
+            {
+                //openFightBoard(name, R.WIGHT);
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_APPLY_FIGHT;
+                sendBundle.username = username;
+                sendBundle.friendname = name;
+                sendMessage(JsonConvert.SerializeObject(sendBundle));
+            }
+            else
+            {
+                new Note(R.NOTE_ALREADY_FIGHT).Show();
+            }
+      
         }
     }
 }

@@ -183,12 +183,30 @@ namespace GoServer
         {
             try
             {
-                MsgBundle sendBundle = new MsgBundle();
-                sendBundle.type = R.CMD_APPLY_FIGHT;
-                sendBundle.status = R.STATUS_SUCCESS;
-                sendBundle.username = newbundle.friendname;
-                sendBundle.friendname = newbundle.username;
-                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
+                if (newbundle.friendname.Equals(newbundle.username))
+                {
+                    MsgBundle sendBundle = new MsgBundle();
+                    sendBundle.type = R.CMD_APPLY_FIGHT;
+                    sendBundle.status = R.STATUS_FAILED;
+                    sendBundle.username = newbundle.username;
+                    sendBundle.friendname = newbundle.friendname;
+                    sendBundle.note = R.NOTE_SELF_FIGHT;
+                    sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                }
+                else
+                {
+                    MsgBundle sendBundle = new MsgBundle();
+                    sendBundle.type = R.CMD_APPLY_FIGHT;
+                    sendBundle.status = R.STATUS_SUCCESS;
+                    sendBundle.username = newbundle.friendname;
+                    sendBundle.friendname = newbundle.username;
+                    sendBundle.isBlack = 0;
+                    sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
+                    sendBundle.username = newbundle.username;
+                    sendBundle.friendname = newbundle.friendname;
+                    sendBundle.isBlack = 1;
+                    sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                }
             }
             catch
             {
