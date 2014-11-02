@@ -41,6 +41,8 @@ namespace GoWithChat
         public const string NOTE_FRIEND_NOT_ONLINE_FIGHT_END = "好友已经离线！比赛结束！";
         public const string NOTE_SELF_FIGHT = "不能和自己对战！";
         public const string NOTE_ALREADY_FIGHT = "您已经和该好友在对战中了！";
+        public const string NOTE_CANNOT_FIGHT = "不能与其对战（可能对方已经进入战斗）";
+        public const string NOTE_WRONG_PAKAGE = "收到错误类型的包";
     }
 
     class MsgBundle

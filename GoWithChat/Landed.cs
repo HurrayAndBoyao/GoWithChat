@@ -11,7 +11,7 @@ namespace GoWithChat
 {
     public partial class Landed : Form
     {
-        ClientManager clientmanager;
+        LandedManager landedmanager;
 
         public Landed()
         {
@@ -20,15 +20,20 @@ namespace GoWithChat
 
         public void Landed_Load(object sender, EventArgs e)
         {
-            clientmanager = new ClientManager();
+            landedmanager = new LandedManager();
         }
 
        public void bt_landed_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(tb_username.Text) && !string.IsNullOrEmpty(tb_passwd.Text))
-            {
-                
-                clientmanager.Landed(tb_username.Text, tb_passwd.Text, this);//登录成功的话登录页面自动隐藏
+            { 
+                bool isLanded = landedmanager.Landed(tb_username.Text, tb_passwd.Text);//登录成功的话登录页面自动隐藏
+                if (isLanded)
+                {
+                    //登录成功，建立board
+                    Note newnote = new Note("登陆成功啦！");
+                    newnote.Show();
+                }
             }
             else
             {

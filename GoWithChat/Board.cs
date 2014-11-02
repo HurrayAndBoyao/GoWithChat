@@ -6,6 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.Collections; //使用Hashtable时，必须引入这个命名空间 
+using System.Runtime.InteropServices;
 //与服务器端的交互接口如下：
 //1：构造函数，三个参数，第一个int为0表示单机，为1表示联机。
 //                       第二个int为0表示黑棋，为1表示白棋。
@@ -25,8 +32,12 @@ namespace GoWithChat
         Boolean[,] p = new Boolean[19, 19];//应用与dfs的一个布尔数组
         public int isonline, color;
         public ClientManager clientmanager;
-        public String friendname;
         private Graphics g;
+
+        public TcpClient tcpClient;
+        public NetworkStream stream;
+        public String username;//【需要构造函数传进来】
+        public String friendname;
 
         public Board(int isonline, int color,ClientManager clientmanager,String friendname)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
         {
@@ -442,6 +453,139 @@ namespace GoWithChat
         private void textBox2_TextChanged(object sender, EventArgs e)//聊天内容
         {
 
+        }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// 
+///                                                               Hurray's Part
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //获取好友列表（只发送一次请求，返回好友列表）
+        public string[] GetFriendList(Form mainform)
+        {
+            try
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_FIND_FRIEND;
+                sendMessage(JsonConvert.SerializeObject(sendBundle));
+
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                if (receiveBundle.type == R.CMD_FIND_FRIEND)
+                {
+                    return receiveBundle.allOnlineName;
+                }
+                else
+                {
+                    showNote(R.NOTE_WRONG_PAKAGE);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                showNote(R.NOTE_SERVER_UNCONNECT);
+                return null;//出错的话返回null
+            }
+        }
+
+        // 建立对战 如果成功则返回true，否则返回false并跳出提示框
+        public bool ApplyFight(string friendname)
+        {
+            try
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_APPLY_FIGHT;
+                sendBundle.username = username;
+                sendBundle.friendname = friendname;
+                sendMessage(JsonConvert.SerializeObject(sendBundle));
+
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                if (receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.type == R.CMD_APPLY_FIGHT)
+                    return true;
+                else if (receiveBundle.type != R.CMD_APPLY_FIGHT)
+                {
+                    showNote(R.NOTE_WRONG_PAKAGE);
+                    return false;
+                }
+                else
+                {
+                    showNote(R.NOTE_CANNOT_FIGHT);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                showNote(R.NOTE_SERVER_UNCONNECT);
+                return false;
+            }
+        }
+
+        // 等待并获取对方落子
+        public string WaitFriendLuoZi()
+        {
+            try
+            {
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.friendname.Equals(friendname))
+                {
+                    return receiveBundle.fightInfo;
+                }
+                else
+                {
+                    showNote(R.NOTE_WRONG_PAKAGE);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                showNote(R.NOTE_SERVER_UNCONNECT);
+                return null;
+            }
+        }
+
+        // 自己下棋传送给服务器，成功则返回true，否则返回flase并提示错误
+        public bool SendFightinfoToServer(String fightInfo)
+        {
+            try
+            {
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_FIGHT;
+                sendBundle.username = username;
+                sendBundle.friendname = friendname;
+                sendBundle.fightInfo = fightInfo;
+                sendMessage(JsonConvert.SerializeObject(sendBundle));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                showNote(R.NOTE_SERVER_UNCONNECT);
+                return false;
+            }
+        }
+
+        public string receiveMsg()
+        {
+            Byte[] data = new Byte[R.MAX_BUFFER_NUM];
+            Int32 bytes = stream.Read(data, 0, data.Length);
+            String responseData = System.Text.Encoding.Unicode.GetString(data, 0, bytes);
+            //tb_output.AppendText(responseData + "!\n");
+            return responseData;
+        }
+
+        public void sendMessage(String msg)
+        {
+            Byte[] bytes = Encoding.Unicode.GetBytes(msg);
+            stream.Write(bytes, 0, bytes.Length);
+        }
+
+        public void showNote(String note)
+        {
+            Note newnote = new Note(note);
+            newnote.Show();
         }
     }
 
