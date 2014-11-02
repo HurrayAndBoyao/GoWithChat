@@ -8,7 +8,6 @@ C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.Server.r
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.csproj.GenerateResource.Cache
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.exe
 C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.pdb
-C:\Users\Hurray\Documents\GitHub\GoWithChat\GoServer\obj\Debug\GoServer.csprojResolveAssemblyReference.cache
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\GoServer.exe.config
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\GoServer.exe
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoServer\bin\Debug\GoServer.pdb
