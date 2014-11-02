@@ -65,6 +65,7 @@ namespace GoWithChat
             this.radioButton9.Hide();
             this.button6.Hide();
             this.button7.Hide();
+            this.button8.Hide();
             for (i = 0; i < 19; i++)
             {
                 for (j = 0; j < 19; j++)
@@ -193,10 +194,9 @@ namespace GoWithChat
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 9 * 23, 3, 3);
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 15 * 23, 3, 3);
         }
-        public void beginfight(int color)
+        public void beginfight()
         {
             String s;
-            this.color = color;
             isfight = 1;
             if (color == 0)
             {
@@ -213,6 +213,7 @@ namespace GoWithChat
             this.Text = username + s;
             this.button6.Hide();
             this.button7.Hide();
+            this.button8.Hide();
             this.radioButton1.Hide();
             this.radioButton2.Hide();
             this.radioButton3.Hide();
@@ -536,10 +537,12 @@ namespace GoWithChat
             radioButton9.Hide();
             button6.Show();
             button7.Show();
+            button8.Show();
             GetFriendList();
             //this.richTextBox1.Hide();
+            System.Threading.Thread.Sleep(100);
             while (this.friendlist == null)
-            { 
+            {
 
             }
             friends = friendlist;
@@ -663,16 +666,29 @@ namespace GoWithChat
             } else
             {
                 ApplyFight(friendname);
-                while (apply_fight != 0)
-                { }
+                System.Threading.Thread.Sleep(100);
+                while (apply_fight == 0)
+                {
+                }
                 if (apply_fight == 1)
                 {
-                    beginfight(0);
+                    beginfight();
                 }
                 else if (apply_fight == -1)
                 {
                     MessageBox.Show("对战未开启！");
                 }
+            }
+        }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (apply_fight == 1)
+            {
+                beginfight();
+            }
+            else if (apply_fight == -1)
+            {
+                MessageBox.Show("对战未开启！");
             }
         }
 
@@ -692,14 +708,7 @@ namespace GoWithChat
                 String msg = receiveMsg();
                 //showNote(msg);
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS)
-                {
-                    //return receiveBundle.friendname;
-                    this.friendname = receiveBundle.friendname;
-                    beginfight(1);
-                    return;
-                } 
-                else if (receiveBundle.type == R.CMD_FIND_FRIEND)
+                if (receiveBundle.type == R.CMD_FIND_FRIEND)
                 {
                     //return receiveBundle.allOnlineName;
                     this.friendlist = receiveBundle.allOnlineName;
@@ -713,6 +722,12 @@ namespace GoWithChat
                 {
                     if (receiveBundle.status == R.STATUS_SUCCESS)
                     {
+                        if (receiveBundle.isBlack == 0)
+                        {
+                            friendname = receiveBundle.friendname;
+                            MessageBox.Show(friendname + "向您发送的对战请求，请点击接受对战！");
+                        }
+                        color = receiveBundle.isBlack;
                         apply_fight = 1;
                     }
                     else
@@ -754,6 +769,7 @@ namespace GoWithChat
                 sendBundle.type = R.CMD_APPLY_FIGHT;
                 sendBundle.username = username;
                 sendBundle.friendname = friendname;
+
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
             }
             catch (Exception ex)
@@ -801,6 +817,7 @@ namespace GoWithChat
         {
             MessageBox.Show(note);
         }
+
 
     }
 
