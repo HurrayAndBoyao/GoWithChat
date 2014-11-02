@@ -462,6 +462,23 @@ namespace GoWithChat
 ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        //线程类：刚登录或退出对战以后打开此线程，接听是否有用户请求对战(返回对方用户名)
+        public string ListenFightApplyThread()
+        {
+            while(true)
+            {
+                String msg = receiveMsg();
+                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS)
+                    return receiveBundle.friendname;
+                else
+                {
+                    showNote(R.NOTE_WRONG_PAKAGE);
+                }
+            }
+            return null;
+        }
+
         //获取好友列表（只发送一次请求，返回好友列表）
         public string[] GetFriendList(Form mainform)
         {
