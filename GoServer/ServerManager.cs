@@ -20,6 +20,7 @@ namespace GoServer
         public TcpListener tcpListener;
         public RichTextBox tb_output;
         public Hashtable hash;
+        public Hashtable fightTable;
 
         public ServerManager(int port, RichTextBox tb_output)
         {
@@ -55,7 +56,9 @@ namespace GoServer
             listenThread.Start();
             tb_output.AppendText("接听开始\n");
             hash = new Hashtable(); //创建一个Hashtable实例 
-            tb_output.AppendText("建立HashMap\n");
+            tb_output.AppendText("建立Hash\n");
+            fightTable = new Hashtable();
+            tb_output.AppendText("建立FightMap\n");
         }
 
         public void ListenThread()
@@ -157,6 +160,7 @@ namespace GoServer
 
         private void fight(MsgBundle newbundle, TcpClient tcpclient)
         {
+           
             try
             {
                 MsgBundle sendBundle = new MsgBundle();
@@ -173,6 +177,7 @@ namespace GoServer
                 newbundle.note = R.NOTE_FRIEND_NOT_ONLINE;
                 sendMsg(newbundle.friendname, JsonConvert.SerializeObject(newbundle));
             }
+            
         }
 
         private void agreeFight(MsgBundle newbundle, TcpClient tcpclient)
@@ -182,38 +187,56 @@ namespace GoServer
 
         private void applyFight(MsgBundle newbundle, TcpClient tcpclient)
         {
-            try
+            if (!fightTable.ContainsKey(newbundle.username) && !fightTable.ContainsKey(newbundle.friendname))
             {
-                if (newbundle.friendname.Equals(newbundle.username))
+                try
                 {
-                    MsgBundle sendBundle = new MsgBundle();
-                    sendBundle.type = R.CMD_APPLY_FIGHT;
-                    sendBundle.status = R.STATUS_FAILED;
-                    sendBundle.username = newbundle.username;
-                    sendBundle.friendname = newbundle.friendname;
-                    sendBundle.note = R.NOTE_SELF_FIGHT;
-                    sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                    if (newbundle.friendname.Equals(newbundle.username))
+                    {
+                        MsgBundle sendBundle = new MsgBundle();
+                        sendBundle.type = R.CMD_APPLY_FIGHT;
+                        sendBundle.status = R.STATUS_FAILED;
+                        sendBundle.username = newbundle.username;
+                        sendBundle.friendname = newbundle.friendname;
+                        sendBundle.note = R.NOTE_SELF_FIGHT;
+                        sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                    }
+                    else
+                    {
+                        //先将二者加入已经对战的表中
+                        fightTable.Add(newbundle.friendname, newbundle.username);
+                        fightTable.Add(newbundle.username, newbundle.friendname);
+
+                        //然后给双方返回开始对战的消息
+                        MsgBundle sendBundle = new MsgBundle();
+                        sendBundle.type = R.CMD_APPLY_FIGHT;
+                        sendBundle.status = R.STATUS_SUCCESS;
+                        sendBundle.username = newbundle.friendname;
+                        sendBundle.friendname = newbundle.username;
+                        sendBundle.isBlack = 0;
+                        sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
+                        sendBundle.username = newbundle.username;
+                        sendBundle.friendname = newbundle.friendname;
+                        sendBundle.isBlack = 1;
+                        sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                    }
                 }
-                else
+                catch
                 {
-                    MsgBundle sendBundle = new MsgBundle();
-                    sendBundle.type = R.CMD_APPLY_FIGHT;
-                    sendBundle.status = R.STATUS_SUCCESS;
-                    sendBundle.username = newbundle.friendname;
-                    sendBundle.friendname = newbundle.username;
-                    sendBundle.isBlack = 0;
-                    sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
-                    sendBundle.username = newbundle.username;
-                    sendBundle.friendname = newbundle.friendname;
-                    sendBundle.isBlack = 1;
-                    sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                    newbundle.status = R.STATUS_FAILED;
+                    newbundle.note = R.NOTE_FRIEND_NOT_ONLINE;
+                    sendMsg(newbundle.friendname, JsonConvert.SerializeObject(newbundle));
                 }
             }
-            catch
+            else
             {
-                newbundle.status = R.STATUS_FAILED;
-                newbundle.note = R.NOTE_FRIEND_NOT_ONLINE;
-                sendMsg(newbundle.friendname, JsonConvert.SerializeObject(newbundle));
+                MsgBundle sendBundle = new MsgBundle();
+                sendBundle.type = R.CMD_APPLY_FIGHT;
+                sendBundle.status = R.STATUS_FAILED;
+                sendBundle.username = newbundle.username;
+                sendBundle.friendname = newbundle.friendname;
+                sendBundle.note = R.NOTE_SELF_FIGHT;
+                sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
             }
         }
 
