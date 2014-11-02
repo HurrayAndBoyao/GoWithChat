@@ -164,6 +164,7 @@ namespace GoServer
                 sendBundle.status = R.STATUS_SUCCESS;
                 sendBundle.username = newbundle.friendname;
                 sendBundle.friendname = newbundle.username;
+                sendBundle.fightInfo = newbundle.fightInfo;
                 sendMsg(newbundle.friendname, JsonConvert.SerializeObject(sendBundle));
             }
             catch

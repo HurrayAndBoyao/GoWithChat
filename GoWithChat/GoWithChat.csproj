@@ -56,7 +56,6 @@
     <Compile Include="Board.Designer.cs">
       <DependentUpon>Board.cs</DependentUpon>
     </Compile>
-    <Compile Include="BoardManager.cs" />
     <Compile Include="ClientDemo.cs">
       <SubType>Form</SubType>
     </Compile>

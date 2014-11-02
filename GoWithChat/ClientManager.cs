@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Collections; //使用Hashtable时，必须引入这个命名空间 
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace GoWithChat
 {
@@ -19,11 +20,17 @@ namespace GoWithChat
         public Hashtable hash_form;
         public String username;
         public String[] friendList;
-        Board board;
+        public Board board;
+        public MethodInvoker mi;
+        public int black;
+        public String friendname;
 
         public ClientManager()
         {
+            //System.Threading.Thread.CurrentThread.Name = "2";
+            mi = new MethodInvoker(showboard); 
             board = new Board(0,0,null,null);
+            board.Show();
             board.Hide();
             hash_form = new Hashtable();
         }
@@ -124,6 +131,8 @@ namespace GoWithChat
 
         public void ListenThread()
         {
+            //mi.BeginInvoke(null,null);
+            //board.Hide();
             while (true)
             {
                 //board.Show();
@@ -150,7 +159,7 @@ namespace GoWithChat
                 {
                     //根据hash_form找到对应的board对象，然后进行相应操作
                     //Board board = (Board)hash_form[receiveBundle.friendname];
-                    //board.get_from_server(receiveBundle.fightInfo);
+                    board.get_from_server(receiveBundle.fightInfo);
                 }
                 else if (receiveBundle.type == R.CMD_FIGHT_CANCLE)
                 {
@@ -173,6 +182,9 @@ namespace GoWithChat
                 }
                 else
                 {
+                    this.black = black;
+                    this.friendname = friendname;
+                    mi.BeginInvoke(null, null);
                     //Board board = new Board(1, black, this, friendname);
                     //Board board = new Board(0, 0, null, null);
                     //board.isonline = 1;
@@ -301,6 +313,24 @@ namespace GoWithChat
             {
                 new Note(R.NOTE_ALREADY_FIGHT).Show();
             }
+        }
+        public void showboard()
+        {
+            MessageBox.Show("对战即将开始，请准备好哦！");
+            board.isonline = 1;
+            board.color = black;
+            board.clientmanager = this;
+            board.friendname = friendname;
+            if (black == 0)
+            {
+                board.Text = "黑方：" + username;
+            }
+            else
+            {
+                board.Text = "白方：" + username;
+            }
+            board.Show();
+            //hash_form.Add(friendname, board);
         }
     }
 }

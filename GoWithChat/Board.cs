@@ -134,9 +134,10 @@ namespace GoWithChat
         }
         public void get_from_server(String s)//收取来自对手的消息
         {
+            MessageBox.Show(this.Text);
             if (s[0] == '0')//下棋
             {
-                go(s[1] - '0' + 9,s[2] - '0' + 9);
+                go((s[1]- '0') * 10 + (s[2] - '0'),(s[3] - '0') * 10 + (s[4] - '0'));
             }
         }
         private Point PointToGrid(int x, int y)
@@ -167,7 +168,7 @@ namespace GoWithChat
                 {
                     if (isonline == 1)
                     {
-                        s = "0" + (p.X - 9) + (p.Y - 9);
+                        s = "0" + (p.X / 10) + (p.X % 10) + (p.Y / 10) + (p.Y % 10);
                         clientmanager.get_from_board(s,friendname);//向服务器发送信息。
                         //MessageBox.Show();
                     }
