@@ -50,7 +50,6 @@ namespace GoWithChat
         public String[] friendlist;
         public Thread thread;
         public int apply_fight = 0;
-        public int wait = 0;
        // public 
 
         public String friendFightInfo;
@@ -196,16 +195,6 @@ namespace GoWithChat
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 3 * 23, 3, 3);
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 9 * 23, 3, 3);
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 15 * 23, 3, 3);
-            if (wait == 1)
-            {
-                wait = 0;
-                while (friendFightInfo == null)
-                {
-                    System.Threading.Thread.Sleep(1);
-                }
-                get_from_server(friendFightInfo);
-                friendFightInfo = null;
-            }
         }
         public void beginfight()
         {
@@ -239,8 +228,12 @@ namespace GoWithChat
             if (color == 1)
             {
                 this.Refresh();
-                wait = 1;
-                this.Refresh();
+                while (friendFightInfo == null)
+                {
+                    System.Threading.Thread.Sleep(1);
+                }
+                get_from_server(friendFightInfo);
+                friendFightInfo = null;
             }
         }
         public void get_from_server(String s)//收取来自对手的消息
@@ -288,8 +281,12 @@ namespace GoWithChat
                     }
                     step = step + 1;
                     this.Refresh();
-                    wait = 1;
-                    this.Refresh();
+                    while (friendFightInfo == null)
+                    {
+                        System.Threading.Thread.Sleep(1);
+                    }
+                    get_from_server(friendFightInfo);
+                    friendFightInfo = null;
                 } 
             }
         }
