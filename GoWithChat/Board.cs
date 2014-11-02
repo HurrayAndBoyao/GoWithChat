@@ -26,6 +26,7 @@ namespace GoWithChat
         public int isonline, color;
         public ClientManager clientmanager;
         public String friendname;
+        private Graphics g;
 
         public Board(int isonline, int color,ClientManager clientmanager,String friendname)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
         {
@@ -65,7 +66,8 @@ namespace GoWithChat
         private void PaintHandler(Object sender, PaintEventArgs e)
         {
             int i, j;
-            Graphics g = e.Graphics;
+            //Graphics g = e.Graphics;
+            g = e.Graphics;
             Brush brText = new SolidBrush(Color.Black);
             Brush brBoard = new SolidBrush(Color.Orange);
             Brush brStar = new SolidBrush(Color.Black);
@@ -134,10 +136,12 @@ namespace GoWithChat
         }
         public void get_from_server(String s)//收取来自对手的消息
         {
-            MessageBox.Show(this.Text);
             if (s[0] == '0')//下棋
             {
-                go((s[1]- '0') * 10 + (s[2] - '0'),(s[3] - '0') * 10 + (s[4] - '0'));
+                if (go((s[1] - '0') * 10 + (s[2] - '0'), (s[3] - '0') * 10 + (s[4] - '0')) == 1)//如果此子可落
+                {
+                    step = step + 1;
+                } 
             }
         }
         private Point PointToGrid(int x, int y)
@@ -418,7 +422,7 @@ namespace GoWithChat
         private void button5_Click(object sender, EventArgs e)//聊天
         {
             String s;
-            if (isonline == 1)
+            if (isonline == 0)
             {
                 MessageBox.Show("单机模式已禁用聊天功能！");
                 return;

@@ -21,14 +21,17 @@ namespace GoWithChat
         public String username;
         public String[] friendList;
         public Board board;
-        public MethodInvoker mi;
+        public MethodInvoker sb;
+        public MethodInvoker sm;
         public int black;
         public String friendname;
+        public String fightinfo;
 
         public ClientManager()
         {
             //System.Threading.Thread.CurrentThread.Name = "2";
-            mi = new MethodInvoker(showboard); 
+            sb = new MethodInvoker(showboard);
+            sm = new MethodInvoker(sendmessage);
             board = new Board(0,0,null,null);
             board.Show();
             board.Hide();
@@ -159,7 +162,9 @@ namespace GoWithChat
                 {
                     //根据hash_form找到对应的board对象，然后进行相应操作
                     //Board board = (Board)hash_form[receiveBundle.friendname];
-                    board.get_from_server(receiveBundle.fightInfo);
+                    this.fightinfo = receiveBundle.fightInfo;
+                    sm.BeginInvoke(null,null);
+                    //board.get_from_server(receiveBundle.fightInfo);
                 }
                 else if (receiveBundle.type == R.CMD_FIGHT_CANCLE)
                 {
@@ -184,7 +189,7 @@ namespace GoWithChat
                 {
                     this.black = black;
                     this.friendname = friendname;
-                    mi.BeginInvoke(null, null);
+                    sb.BeginInvoke(null, null);
                     //Board board = new Board(1, black, this, friendname);
                     //Board board = new Board(0, 0, null, null);
                     //board.isonline = 1;
@@ -331,6 +336,10 @@ namespace GoWithChat
             }
             board.Show();
             //hash_form.Add(friendname, board);
+        }
+        public void sendmessage()
+        {
+            board.get_from_server(fightinfo); 
         }
     }
 }
