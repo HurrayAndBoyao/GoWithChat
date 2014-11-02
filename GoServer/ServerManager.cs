@@ -99,16 +99,17 @@ namespace GoServer
                     {
                         if (de.Value == tcpClient)
                         {
-                            hash.Remove(de.Key);
-                            tb_output.AppendText("成功删除用户登录信息！\n");
                             foreach (DictionaryEntry d in fightTable)
                             {
-                                if (d.Key == de.Key)
+                                if (d.Key.Equals(de.Key))
                                 {
                                     fightTable.Remove(d.Key);
                                     tb_output.AppendText("成功删除用户对战信息！\n");
                                 }
                             }
+                            hash.Remove(de.Key);
+                            tb_output.AppendText("成功删除用户登录信息！\n");
+                            
                             break;
                         }
                     }
