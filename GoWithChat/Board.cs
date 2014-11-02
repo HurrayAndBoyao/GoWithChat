@@ -25,29 +25,55 @@ namespace GoWithChat
     {
         /** @author jby */
 
-        Unit[,] unit = new Unit[19, 19];//单元格数组
-        static int step = 0;//表示当前步数
-        Image img_black = new Bitmap("../../resource/img/black.png");
-        Image img_white = new Bitmap("../../resource/img/white.png");
-        Boolean[,] p = new Boolean[19, 19];//应用与dfs的一个布尔数组
-        public int isonline, color;
-        public ClientManager clientmanager;
-        private Graphics g;
+        private Unit[,] unit = new Unit[19, 19];//单元格数组
+        private static int step = 0;//表示当前步数
+        private Image img_black = new Bitmap("../../resource/img/black.png");
+        private Image img_white = new Bitmap("../../resource/img/white.png");
+        private Boolean[,] p = new Boolean[19, 19];//应用与dfs的一个布尔数组
+        public int isonline, color, isfight;
 
         public TcpClient tcpClient;
         public NetworkStream stream;
         public String username;//【需要构造函数传进来】
         public String friendname;
+        public String[] friendlist;
 
-        public Board(int isonline, int color,ClientManager clientmanager,String friendname)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
+        public Board(String username)
         {
             int i, j,k;
-            this.isonline = isonline;
-            this.color = color;
-            this.clientmanager = clientmanager;
-            this.friendname = friendname;
+            if (username == null)
+            {
+                isonline = 0;
+                isfight = 1;
+            }
+            else
+            {
+                isonline = 1;
+                isfight = 0;
+                new Thread(ListenFightApplyThread).Start();
+            }
+
+            this.tcpClient = new TcpClient();
+            tcpClient.Connect(R.IPADDRESS, R.PORT);
+            this.stream = tcpClient.GetStream();
+
             InitializeComponent();
             this.SuspendLayout();
+            this.radioButton1.Hide();
+            this.radioButton2.Hide();
+            this.radioButton3.Hide();
+            this.radioButton4.Hide();
+            this.radioButton5.Hide();
+            this.radioButton6.Hide();
+            this.radioButton7.Hide();
+            this.radioButton8.Hide();
+            this.radioButton9.Hide();
+            this.button6.Hide();
+            this.button7.Hide();
+            if (isfight == 0)
+            {
+                ShowFriends();
+            }
             for (i = 0; i < 19; i++)
             {
                 for (j = 0; j < 19; j++)
@@ -72,7 +98,6 @@ namespace GoWithChat
                         }
                         this.Controls.Add(this.pictureBox[i, j,k]);
                         ((System.ComponentModel.ISupportInitialize)(this.pictureBox[i, j,k])).EndInit();
-                        this.pictureBox[i, j,k].Show();
                         this.pictureBox[i, j,k].Hide();
                     }
                 }
@@ -89,8 +114,7 @@ namespace GoWithChat
         private void PaintHandler(Object sender, PaintEventArgs e)
         {
             int i, j;
-            //Graphics g = e.Graphics;
-            g = e.Graphics;
+            Graphics g = e.Graphics;
             Brush brText = new SolidBrush(Color.Black);
             Brush brBoard = new SolidBrush(Color.Orange);
             Brush brStar = new SolidBrush(Color.Black);
@@ -109,6 +133,10 @@ namespace GoWithChat
             else
             {
                 textBox1.Text = "白棋下棋";
+            }
+            if (isfight == 0)
+            {
+                textBox1.Text = "等待对战";
             }
 
             g.DrawLine(penSide2, 458, 19, 458, 458);
@@ -157,6 +185,36 @@ namespace GoWithChat
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 9 * 23, 3, 3);
             g.FillRectangle(brStar, 30 + 15 * 23, 30 + 15 * 23, 3, 3);
         }
+        public void beginfight(int color)
+        {
+            String s;
+            this.color = color;
+            isfight = 1;
+            if (color == 0)
+            {
+                s = "执黑";
+                this.richTextBox1.Text += "由 " + username + " 发起的对战开始！";
+                this.richTextBox1.Text += username + " 执黑, " + friendname + " 执白。";
+            }
+            else
+            {
+                s = "执白";
+                this.richTextBox1.Text += "由 " + friendname + " 发起的对战开始！";
+                this.richTextBox1.Text += friendname + " 执黑, " + username + " 执白。";
+            }
+            this.Text = username + s;
+            this.button6.Hide();
+            this.button7.Hide();
+            this.radioButton1.Hide();
+            this.radioButton2.Hide();
+            this.radioButton3.Hide();
+            this.radioButton4.Hide();
+            this.radioButton5.Hide();
+            this.radioButton6.Hide();
+            this.radioButton7.Hide();
+            this.radioButton8.Hide();
+            this.radioButton9.Hide();
+        }
         public void get_from_server(String s)//收取来自对手的消息
         {
             if (s[0] == '0')//下棋
@@ -196,7 +254,7 @@ namespace GoWithChat
                     if (isonline == 1)
                     {
                         s = "0" + (p.X / 10) + (p.X % 10) + (p.Y / 10) + (p.Y % 10);
-                        clientmanager.get_from_board(s,friendname);//向服务器发送信息。
+                        //clientmanager.get_from_board(s,friendname);//向服务器发送信息。
                         //MessageBox.Show();
                     }
                     step = step + 1;
@@ -447,12 +505,153 @@ namespace GoWithChat
                 return;
             }
             s = "5" + textBox2.Text;
-            clientmanager.get_from_board(s,friendname);//向服务器发送信息。
+            //clientmanager.get_from_board(s,friendname);//向服务器发送信息。
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)//聊天内容
         {
 
+        }
+        public void ShowFriends()
+        {
+            int i;
+            String[] friends;
+            friends = friendlist;
+            radioButton1.Hide();
+            radioButton2.Hide();
+            radioButton3.Hide();
+            radioButton4.Hide();
+            radioButton5.Hide();
+            radioButton6.Hide();
+            radioButton7.Hide();
+            radioButton8.Hide();
+            radioButton9.Hide();
+            button6.Show();
+            button7.Show();
+            GetFriendList();
+            while (friendlist == null)
+            { 
+
+            }
+            friends = friendlist;
+            for (i = 0; i < friends.Length; i++)
+            {
+                if (friends[i] != username)
+                {
+                    if (radioButton1.Text != "")
+                    {
+                        radioButton1.Text = friends[i];
+                        radioButton1.Show();
+                    }
+                    else if (radioButton2.Text != "")
+                    {
+                        radioButton2.Text = friends[i];
+                        radioButton2.Show();
+                    }
+                    else if (radioButton3.Text != "")
+                    {
+                        radioButton3.Text = friends[i];
+                        radioButton3.Show();
+                    }
+                    else if (radioButton4.Text != "")
+                    {
+                        radioButton4.Text = friends[i];
+                        radioButton4.Show();
+                    }
+                    else if (radioButton5.Text != "")
+                    {
+                        radioButton5.Text = friends[i];
+                        radioButton5.Show();
+                    }
+                    else if (radioButton6.Text != "")
+                    {
+                        radioButton6.Text = friends[i];
+                        radioButton6.Show();
+                    }
+                    else if (radioButton7.Text != "")
+                    {
+                        radioButton7.Text = friends[i];
+                        radioButton7.Show();
+                    }
+                    else if (radioButton8.Text != "")
+                    {
+                        radioButton8.Text = friends[i];
+                        radioButton8.Show();
+                    }
+                    else if (radioButton9.Text != "")
+                    {
+                        radioButton9.Text = friends[i];
+                        radioButton9.Show();
+                    }
+                }
+            }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton1.Text;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton2.Text;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton3.Text;
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton4.Text;
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton5.Text;
+        }
+
+        private void radioButton6_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton6.Text;
+        }
+
+        private void radioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton7.Text;
+        }
+
+        private void radioButton8_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton8.Text;
+        }
+
+        private void radioButton9_CheckedChanged(object sender, EventArgs e)
+        {
+            friendname = this.radioButton9.Text;
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ShowFriends();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (friendname == null)
+            {
+                MessageBox.Show("对不起，您未选中任何好友");
+            } else
+            {
+                if (ApplyFight(friendname) == true)
+                {
+                    beginfight(0);
+                }
+                else
+                {
+                    MessageBox.Show("对战未开启！");
+                }
+            }
         }
 
 
@@ -463,24 +662,35 @@ namespace GoWithChat
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //线程类：刚登录或退出对战以后打开此线程，接听是否有用户请求对战(返回对方用户名)
-        public string ListenFightApplyThread()
+        public void ListenFightApplyThread()
         {
             while(true)
             {
+                //showNote("testtest1");
                 String msg = receiveMsg();
+                showNote(msg);
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
                 if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS)
-                    return receiveBundle.friendname;
+                {
+                    //return receiveBundle.friendname;
+                    this.friendname = receiveBundle.friendname;
+                    return;
+                } else if (receiveBundle.type == R.CMD_FIND_FRIEND)
+                {
+                    //return receiveBundle.allOnlineName;
+                    this.friendlist = receiveBundle.allOnlineName;
+                }
                 else
                 {
-                    showNote(R.NOTE_WRONG_PAKAGE);
+                    MessageBox.Show(R.NOTE_WRONG_PAKAGE);
+                    //return null;
                 }
             }
-            return null;
+            //return null;
         }
 
         //获取好友列表（只发送一次请求，返回好友列表）
-        public string[] GetFriendList(Form mainform)
+        public void GetFriendList()
         {
             try
             {
@@ -488,22 +698,23 @@ namespace GoWithChat
                 sendBundle.type = R.CMD_FIND_FRIEND;
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
 
-                String msg = receiveMsg();
-                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                if (receiveBundle.type == R.CMD_FIND_FRIEND)
-                {
-                    return receiveBundle.allOnlineName;
-                }
-                else
-                {
-                    showNote(R.NOTE_WRONG_PAKAGE);
-                    return null;
-                }
+                //String msg = receiveMsg();
+                //MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
+                //if (receiveBundle.type == R.CMD_FIND_FRIEND)
+                //{
+                    //return receiveBundle.allOnlineName;
+                //}
+                //else
+                //{
+                    //MessageBox.Show(R.NOTE_WRONG_PAKAGE);
+                    //return null;
+                //}
             }
             catch (Exception ex)
             {
-                showNote(R.NOTE_SERVER_UNCONNECT);
-                return null;//出错的话返回null
+                MessageBox.Show(R.NOTE_SERVER_UNCONNECT);
+                //showNote(R.NOTE_SERVER_UNCONNECT);
+                //return null;//出错的话返回null
             }
         }
 
@@ -546,6 +757,7 @@ namespace GoWithChat
             try
             {
                 String msg = receiveMsg();
+                
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
                 if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.friendname.Equals(friendname))
                 {
@@ -601,9 +813,9 @@ namespace GoWithChat
 
         public void showNote(String note)
         {
-            Note newnote = new Note(note);
-            newnote.Show();
+            MessageBox.Show(note);
         }
+
     }
 
     public class Unit

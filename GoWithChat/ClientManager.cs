@@ -32,7 +32,7 @@ namespace GoWithChat
             //System.Threading.Thread.CurrentThread.Name = "2";
             sb = new MethodInvoker(showboard);
             sm = new MethodInvoker(sendmessage);
-            board = new Board(0,0,null,null);
+            //board = new Board(0,0,null,null);
             board.Show();
             board.Hide();
             hash_form = new Hashtable();
@@ -324,7 +324,7 @@ namespace GoWithChat
             MessageBox.Show("对战即将开始，请准备好哦！");
             board.isonline = 1;
             board.color = black;
-            board.clientmanager = this;
+            //board.clientmanager = this;
             board.friendname = friendname;
             if (black == 0)
             {
