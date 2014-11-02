@@ -38,6 +38,10 @@ namespace GoWithChat
         public String friendname;
         public String[] friendlist;
         public Thread thread;
+        public int apply_fight = 0;
+       // public 
+
+        public String friendFightInfo;
 
         public Board(String username,TcpClient tcpClient,NetworkStream stream)
         {
@@ -658,14 +662,14 @@ namespace GoWithChat
                 MessageBox.Show("对不起，您未选中任何好友");
             } else
             {
-                MessageBox.Show("准备关闭线程");
-                thread.Abort();
-                MessageBox.Show(thread.IsAlive.ToString());
-                if (ApplyFight(friendname) == true)
+                ApplyFight(friendname);
+                while (apply_fight != 0)
+                { }
+                if (apply_fight == 1)
                 {
                     beginfight(0);
                 }
-                else
+                else if (apply_fight == -1)
                 {
                     MessageBox.Show("对战未开启！");
                 }
@@ -694,11 +698,28 @@ namespace GoWithChat
                     this.friendname = receiveBundle.friendname;
                     beginfight(1);
                     return;
-                } else if (receiveBundle.type == R.CMD_FIND_FRIEND)
+                } 
+                else if (receiveBundle.type == R.CMD_FIND_FRIEND)
                 {
                     //return receiveBundle.allOnlineName;
                     this.friendlist = receiveBundle.allOnlineName;
                     //MessageBox.Show(friendlist[0]);
+                }
+                else if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.friendname.Equals(friendname))
+                {
+                    friendFightInfo = receiveBundle.fightInfo;
+                }
+                else if (receiveBundle.type == R.CMD_APPLY_FIGHT)
+                {
+                    if (receiveBundle.status == R.STATUS_SUCCESS)
+                    {
+                        apply_fight = 1;
+                    }
+                    else
+                    {
+                        showNote(R.NOTE_CANNOT_FIGHT);
+                        apply_fight = -1;
+                    }
                 }
                 else
                 {
@@ -717,29 +738,15 @@ namespace GoWithChat
                 MsgBundle sendBundle = new MsgBundle();
                 sendBundle.type = R.CMD_FIND_FRIEND;
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
-
-                //String msg = receiveMsg();
-                //MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                //if (receiveBundle.type == R.CMD_FIND_FRIEND)
-                //{
-                    //return receiveBundle.allOnlineName;
-                //}
-                //else
-                //{
-                    //MessageBox.Show(R.NOTE_WRONG_PAKAGE);
-                    //return null;
-                //}
             }
             catch (Exception ex)
             {
                 MessageBox.Show(R.NOTE_SERVER_UNCONNECT);
-                //showNote(R.NOTE_SERVER_UNCONNECT);
-                //return null;//出错的话返回null
             }
         }
 
         // 建立对战 如果成功则返回true，否则返回false并跳出提示框
-        public bool ApplyFight(string friendname)
+        public void ApplyFight(string friendname)
         {
             try
             {
@@ -748,52 +755,10 @@ namespace GoWithChat
                 sendBundle.username = username;
                 sendBundle.friendname = friendname;
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
-
-                String msg = receiveMsg();
-                showNote(msg);
-                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                if (receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.type == R.CMD_APPLY_FIGHT)
-                    return true;
-                else if (receiveBundle.type != R.CMD_APPLY_FIGHT)
-                {
-                    showNote(R.NOTE_WRONG_PAKAGE);
-                    return false;
-                }
-                else
-                {
-                    showNote(R.NOTE_CANNOT_FIGHT);
-                    return false;
-                }
             }
             catch (Exception ex)
             {
                 showNote(R.NOTE_SERVER_UNCONNECT);
-                return false;
-            }
-        }
-
-        // 等待并获取对方落子
-        public string WaitFriendLuoZi()
-        {
-            try
-            {
-                String msg = receiveMsg();
-                
-                MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
-                if (receiveBundle.type == R.CMD_FIGHT && receiveBundle.friendname.Equals(friendname))
-                {
-                    return receiveBundle.fightInfo;
-                }
-                else
-                {
-                    showNote(R.NOTE_WRONG_PAKAGE);
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                showNote(R.NOTE_SERVER_UNCONNECT);
-                return null;
             }
         }
 
