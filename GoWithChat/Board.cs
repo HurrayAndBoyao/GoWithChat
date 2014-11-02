@@ -30,7 +30,7 @@ namespace GoWithChat
 
         public Board(int isonline, int color,ClientManager clientmanager,String friendname)//Board的构造函数接收两个参数，第一个0表示单机，1表示联机。第二个表示这个板子是由哪个颜色下棋的。
         {
-            int i, j;
+            int i, j,k;
             this.isonline = isonline;
             this.color = color;
             this.clientmanager = clientmanager;
@@ -41,17 +41,29 @@ namespace GoWithChat
             {
                 for (j = 0; j < 19; j++)
                 {
-                    this.pictureBox[i, j] = new System.Windows.Forms.PictureBox();
-                    ((System.ComponentModel.ISupportInitialize)(this.pictureBox[i, j])).BeginInit();
-                    this.pictureBox[i, j].Location = new System.Drawing.Point(22 + i * 23, 22 + j * 23);
-                    this.pictureBox[i, j].Name = "pictureBox[" + (i + 1) + "][" + (j + 1) + "]";
-                    this.pictureBox[i, j].Size = new System.Drawing.Size(19, 19);
-                    this.pictureBox[i, j].TabIndex = 0;
-                    this.pictureBox[i, j].BackColor = Color.Transparent;
-                    this.pictureBox[i, j].TabStop = false;
-                    this.Controls.Add(this.pictureBox[i, j]);
-                    ((System.ComponentModel.ISupportInitialize)(this.pictureBox[i, j])).EndInit();
-                    this.pictureBox[i, j].Hide();
+                    for (k = 0; k < 2;k++ )
+                    {
+                        this.pictureBox[i, j,k] = new System.Windows.Forms.PictureBox();
+                        ((System.ComponentModel.ISupportInitialize)(this.pictureBox[i, j,k])).BeginInit();
+                        this.pictureBox[i, j,k].Location = new System.Drawing.Point(22 + i * 23, 22 + j * 23);
+                        this.pictureBox[i, j,k].Name = "pictureBox[" + (i + 1) + "][" + (j + 1) + "]";
+                        this.pictureBox[i, j,k].Size = new System.Drawing.Size(19, 19);
+                        this.pictureBox[i, j,k].TabIndex = 0;
+                        this.pictureBox[i, j,k].BackColor = Color.Transparent;
+                        this.pictureBox[i, j,k].TabStop = false;
+                        if (k == 0)
+                        {
+                            this.pictureBox[i, j, k].Image = img_black;
+                        } 
+                        else
+                        {
+                            this.pictureBox[i, j, k].Image = img_white;
+                        }
+                        this.Controls.Add(this.pictureBox[i, j,k]);
+                        ((System.ComponentModel.ISupportInitialize)(this.pictureBox[i, j,k])).EndInit();
+                        this.pictureBox[i, j,k].Show();
+                        this.pictureBox[i, j,k].Hide();
+                    }
                 }
             }
             this.ResumeLayout(false);
@@ -196,15 +208,7 @@ namespace GoWithChat
                 if (dfs_compute(x, y, color) == 0) return 0;//如果自己下了就死，下不了
             }
             unit[x, y].color = color;
-            if (color == 0)
-            {
-                pictureBox[x, y].Image = img_black;
-            }
-            if (color == 1)
-            {
-                pictureBox[x, y].Image = img_white;
-            }
-            pictureBox[x, y].Show();//显示这个棋子
+            pictureBox[x, y,color].Show();//显示这个棋子
             if ((caneat / 1000) == 1)
             {
                 be_eaten(x - 1, y);
@@ -354,8 +358,7 @@ namespace GoWithChat
         private void dfs(int x, int y, int color)//吃掉这片棋的函数
         {
             p[x, y] = true;
-            pictureBox[x, y].Image = null;
-            pictureBox[x, y].Hide();
+            pictureBox[x, y,color].Hide();
             unit[x, y].color = -1;
             if (x != 0)
             {

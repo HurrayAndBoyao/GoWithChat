@@ -141,7 +141,7 @@ namespace GoWithChat
 
         #endregion
 
-        private System.Windows.Forms.PictureBox[,] pictureBox = new System.Windows.Forms.PictureBox[19, 19];
+        private System.Windows.Forms.PictureBox[,,] pictureBox = new System.Windows.Forms.PictureBox[19,19,2];
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
