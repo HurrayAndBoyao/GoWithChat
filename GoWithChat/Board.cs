@@ -223,6 +223,15 @@ namespace GoWithChat
             this.radioButton7.Hide();
             this.radioButton8.Hide();
             this.radioButton9.Hide();
+            if (color == 1)
+            {
+                while (friendFightInfo == null)
+                {
+                    System.Threading.Thread.Sleep(1);
+                }
+                get_from_server(friendFightInfo);
+                friendFightInfo = null;
+            }
         }
         public void get_from_server(String s)//收取来自对手的消息
         {
@@ -245,6 +254,7 @@ namespace GoWithChat
         {
             Point p;
             String s;
+            if (isfight == 0) return;
 
             if (isonline == 1)
             {
@@ -263,10 +273,16 @@ namespace GoWithChat
                     if (isonline == 1)
                     {
                         s = "0" + (p.X / 10) + (p.X % 10) + (p.Y / 10) + (p.Y % 10);
-                        //clientmanager.get_from_board(s,friendname);//向服务器发送信息。
+                        this.SendFightinfoToServer(s);
                         //MessageBox.Show();
                     }
                     step = step + 1;
+                    while (friendFightInfo == null)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    get_from_server(friendFightInfo);
+                    friendFightInfo = null;
                 } 
             }
         }

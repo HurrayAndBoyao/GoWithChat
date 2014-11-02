@@ -339,7 +339,7 @@ namespace GoWithChat
         }
         public void sendmessage()
         {
-            board.get_from_server(fightinfo); 
+            //board.get_from_server(fightinfo); 
         }
     }
 }
