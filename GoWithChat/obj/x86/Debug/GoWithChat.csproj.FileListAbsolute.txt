@@ -58,3 +58,4 @@ C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Propertie
 C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache
 C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
 C:\Users\Hurray\Desktop\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
+C:\Users\Hurray\Documents\GitHub\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.Board.resources

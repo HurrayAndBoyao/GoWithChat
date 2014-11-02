@@ -20,8 +20,13 @@ namespace GoServer
 
         private void Server_FormClosing(Object sender, FormClosingEventArgs e)
         {
-            servermanager.ExitServer();
-            Application.ExitThread();
+            try
+            {
+                servermanager.ExitServer();
+                Application.ExitThread();
+            }
+            catch (Exception ee)
+            { }
         }
 
         public ServerManager servermanager;
