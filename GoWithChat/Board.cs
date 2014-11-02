@@ -25,6 +25,17 @@ namespace GoWithChat
     {
         /** @author jby */
 
+        Brush brText = new SolidBrush(Color.Black);
+        Brush brBoard = new SolidBrush(Color.Orange);
+        Brush brStar = new SolidBrush(Color.Black);
+        Brush brBlack = new SolidBrush(Color.Black);
+        Brush brWhite = new SolidBrush(Color.White);
+        Pen penLine = new Pen(Color.Black, 1);
+        Pen penSide1 = new Pen(Color.WhiteSmoke, 2);
+        Pen penSide2 = new Pen(Color.Gray, 2);
+        string[] strH = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" };
+        string[] strV = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" };
+
         private Unit[,] unit = new Unit[19, 19];//单元格数组
         private static int step = 0;//表示当前步数
         private Image img_black = new Bitmap("../../resource/img/black.png");
@@ -48,6 +59,7 @@ namespace GoWithChat
         {
             int i, j,k;
             this.username = username;
+            this.Text = username;
             this.tcpClient = tcpClient;
             //tcpClient.Connect(R.IPADDRESS, R.PORT);
             this.stream = stream;
@@ -125,16 +137,6 @@ namespace GoWithChat
         {
             int i, j;
             Graphics g = e.Graphics;
-            Brush brText = new SolidBrush(Color.Black);
-            Brush brBoard = new SolidBrush(Color.Orange);
-            Brush brStar = new SolidBrush(Color.Black);
-            Brush brBlack = new SolidBrush(Color.Black);
-            Brush brWhite = new SolidBrush(Color.White);
-            Pen penLine = new Pen(Color.Black, 1);
-            Pen penSide1 = new Pen(Color.WhiteSmoke, 2);
-            Pen penSide2 = new Pen(Color.Gray, 2);
-            string[] strH = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" };
-            string[] strV = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" };
 
             if (step % 2 == 0)
             {
@@ -212,13 +214,13 @@ namespace GoWithChat
             if (color == 0)
             {
                 s = "执黑";
-                this.richTextBox1.Text += "由 " + username + " 发起的对战开始！";
+                this.richTextBox1.Text += "由 " + friendname + " 发起的对战开始！";
                 this.richTextBox1.Text += username + " 执黑, " + friendname + " 执白。";
             }
             else
             {
                 s = "执白";
-                this.richTextBox1.Text += "由 " + friendname + " 发起的对战开始！";
+                this.richTextBox1.Text += "由 " + username + " 发起的对战开始！";
                 this.richTextBox1.Text += friendname + " 执黑, " + username + " 执白。";
             }
             this.Text = username + s;
@@ -746,7 +748,7 @@ namespace GoWithChat
                         if (receiveBundle.isBlack == 0)
                         {
                             friendname = receiveBundle.friendname;
-                            MessageBox.Show(friendname + "向您发送的对战请求，请点击接受对战！");
+                            MessageBox.Show(friendname + "向您发送的对战请求，请点击接受对战！",username);
                         }
                         color = receiveBundle.isBlack;
                         apply_fight = 1;
