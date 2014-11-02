@@ -37,27 +37,18 @@ namespace GoWithChat
         public String username;//【需要构造函数传进来】
         public String friendname;
         public String[] friendlist;
+        public Thread thread;
 
-        public Board(String username)
+        public Board(String username,TcpClient tcpClient,NetworkStream stream)
         {
             int i, j,k;
-            if (username == null)
-            {
-                isonline = 0;
-                isfight = 1;
-            }
-            else
-            {
-                isonline = 1;
-                isfight = 0;
-                new Thread(ListenFightApplyThread).Start();
-            }
-
-            this.tcpClient = new TcpClient();
-            tcpClient.Connect(R.IPADDRESS, R.PORT);
-            this.stream = tcpClient.GetStream();
+            this.username = username;
+            this.tcpClient = tcpClient;
+            //tcpClient.Connect(R.IPADDRESS, R.PORT);
+            this.stream = stream;
 
             InitializeComponent();
+            //this.Show();
             this.SuspendLayout();
             this.radioButton1.Hide();
             this.radioButton2.Hide();
@@ -70,10 +61,6 @@ namespace GoWithChat
             this.radioButton9.Hide();
             this.button6.Hide();
             this.button7.Hide();
-            if (isfight == 0)
-            {
-                ShowFriends();
-            }
             for (i = 0; i < 19; i++)
             {
                 for (j = 0; j < 19; j++)
@@ -109,6 +96,23 @@ namespace GoWithChat
                 {
                     unit[i, j] = new Unit(i, j);
                 }
+            }
+            if (username == null)
+            {
+                isonline = 0;
+                isfight = 1;
+            }
+            else
+            {
+                isonline = 1;
+                isfight = 0;
+                thread = new Thread(ListenFightApplyThread);
+                thread.Start();
+            }
+            this.Show();
+            if (isfight == 0)
+            {
+                ShowFriends();
             }
         }
         private void PaintHandler(Object sender, PaintEventArgs e)
@@ -529,60 +533,71 @@ namespace GoWithChat
             button6.Show();
             button7.Show();
             GetFriendList();
-            while (friendlist == null)
+            //this.richTextBox1.Hide();
+            while (this.friendlist == null)
             { 
 
             }
             friends = friendlist;
-            for (i = 0; i < friends.Length; i++)
+            //if (friends != null)
+            //this.pictureBox[0, 0, 0].Show();
+            //MessageBox.Show(friends[0]);
+            //friends = new String [] {"1","2","3","4"};
+            int j;
+            for (i = 0,j = 1; i < friends.Length; i++, j++)
             {
-                if (friends[i] != username)
+                if (!friends[i].Equals(username))
                 {
-                    if (radioButton1.Text != "")
+                    //MessageBox.Show(radioButton1.Text + "hehe");
+                    if (j == 1)
                     {
                         radioButton1.Text = friends[i];
                         radioButton1.Show();
                     }
-                    else if (radioButton2.Text != "")
+                    else if (j == 2)
                     {
                         radioButton2.Text = friends[i];
                         radioButton2.Show();
                     }
-                    else if (radioButton3.Text != "")
+                    else if (j == 3)
                     {
                         radioButton3.Text = friends[i];
                         radioButton3.Show();
                     }
-                    else if (radioButton4.Text != "")
+                    else if (j == 4)
                     {
                         radioButton4.Text = friends[i];
                         radioButton4.Show();
                     }
-                    else if (radioButton5.Text != "")
+                    else if (j == 5)
                     {
                         radioButton5.Text = friends[i];
                         radioButton5.Show();
                     }
-                    else if (radioButton6.Text != "")
+                    else if (j == 6)
                     {
                         radioButton6.Text = friends[i];
                         radioButton6.Show();
                     }
-                    else if (radioButton7.Text != "")
+                    else if (j == 7)
                     {
                         radioButton7.Text = friends[i];
                         radioButton7.Show();
                     }
-                    else if (radioButton8.Text != "")
+                    else if (j == 8)
                     {
                         radioButton8.Text = friends[i];
                         radioButton8.Show();
                     }
-                    else if (radioButton9.Text != "")
+                    else if (j == 9)
                     {
                         radioButton9.Text = friends[i];
                         radioButton9.Show();
                     }
+                }
+                else
+                {
+                    j--;
                 }
             }
         }
@@ -643,6 +658,9 @@ namespace GoWithChat
                 MessageBox.Show("对不起，您未选中任何好友");
             } else
             {
+                MessageBox.Show("准备关闭线程");
+                thread.Abort();
+                MessageBox.Show(thread.IsAlive.ToString());
                 if (ApplyFight(friendname) == true)
                 {
                     beginfight(0);
@@ -668,17 +686,19 @@ namespace GoWithChat
             {
                 //showNote("testtest1");
                 String msg = receiveMsg();
-                showNote(msg);
+                //showNote(msg);
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
                 if (receiveBundle.type == R.CMD_APPLY_FIGHT && receiveBundle.status == R.STATUS_SUCCESS)
                 {
                     //return receiveBundle.friendname;
                     this.friendname = receiveBundle.friendname;
+                    beginfight(1);
                     return;
                 } else if (receiveBundle.type == R.CMD_FIND_FRIEND)
                 {
                     //return receiveBundle.allOnlineName;
                     this.friendlist = receiveBundle.allOnlineName;
+                    //MessageBox.Show(friendlist[0]);
                 }
                 else
                 {
@@ -730,6 +750,7 @@ namespace GoWithChat
                 sendMessage(JsonConvert.SerializeObject(sendBundle));
 
                 String msg = receiveMsg();
+                showNote(msg);
                 MsgBundle receiveBundle = JsonConvert.DeserializeObject<MsgBundle>(msg);
                 if (receiveBundle.status == R.STATUS_SUCCESS && receiveBundle.type == R.CMD_APPLY_FIGHT)
                     return true;

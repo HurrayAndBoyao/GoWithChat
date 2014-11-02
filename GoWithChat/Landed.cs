@@ -31,9 +31,8 @@ namespace GoWithChat
                 if (isLanded)
                 {
                     //登录成功，建立board
-                    Board board = new Board(tb_username.Text);
-                    board.Show();
-                    System.Threading.Thread.Sleep(30000);
+                    Board board = new Board(tb_username.Text,this.landedmanager.tcpClient,this.landedmanager.stream);
+                    //board.Show();
                     this.Hide();
                     //Note newnote = new Note("登陆成功啦！");
                     //newnote.Show();
@@ -53,7 +52,7 @@ namespace GoWithChat
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Board board = new Board(null);
+            Board board = new Board(null,null,null);
             board.Show();
         }
     }

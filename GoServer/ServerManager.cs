@@ -201,7 +201,7 @@ namespace GoServer
                         sendBundle.note = R.NOTE_SELF_FIGHT;
                         sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
                     }
-                    else
+                    else if (hash.ContainsKey(newbundle.friendname))
                     {
                         //先将二者加入已经对战的表中
                         fightTable.Add(newbundle.friendname, newbundle.username);
@@ -220,6 +220,16 @@ namespace GoServer
                         sendBundle.isBlack = 1;
                         sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
                     }
+                    else
+                    {
+                        MsgBundle sendBundle = new MsgBundle();
+                        sendBundle.type = R.CMD_APPLY_FIGHT;
+                        sendBundle.status = R.STATUS_FAILED;
+                        sendBundle.username = newbundle.username;
+                        sendBundle.friendname = newbundle.friendname;
+                        sendBundle.note = R.NOTE_FRIEND_NOT_ONLINE;
+                        sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
+                    }
                 }
                 catch
                 {
@@ -235,7 +245,7 @@ namespace GoServer
                 sendBundle.status = R.STATUS_FAILED;
                 sendBundle.username = newbundle.username;
                 sendBundle.friendname = newbundle.friendname;
-                sendBundle.note = R.NOTE_SELF_FIGHT;
+                sendBundle.note = R.NOTE_ALREADY_FIGHT;
                 sendMsg(newbundle.username, JsonConvert.SerializeObject(sendBundle));
             }
         }
