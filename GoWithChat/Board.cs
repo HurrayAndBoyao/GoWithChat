@@ -794,6 +794,8 @@ namespace GoWithChat
         private void button4_Click(object sender, EventArgs e)//点目
         {
             int i,j;
+            int x, y;
+            String s;
             if (isonline == 1)
             {
                 MessageBox.Show("抱歉，目前联机模式无法点目");
@@ -810,6 +812,16 @@ namespace GoWithChat
                     }
                 }
                 richTextBox1.Text += "\n黑棋目数：" + black + ",白棋目数：" + white;
+                x = black;
+                y = white + 4;
+                if (x <= y)
+                {
+                    s = ",白胜" + (y - x) + "又3/4目";
+                } else
+                {
+                    s = ",黑胜" + (x - y - 1) + "又1/4目";
+                }
+                MessageBox.Show("黑棋子数为：" + black + ",白棋子数为：" + white + s);
                 return;
             }
             if (shumu == 0)

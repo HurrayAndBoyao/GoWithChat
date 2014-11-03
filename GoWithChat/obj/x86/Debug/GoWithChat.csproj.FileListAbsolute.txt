@@ -58,4 +58,3 @@ D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithC
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csproj.GenerateResource.Cache
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.exe
 D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.pdb
-D:\各种各样乱码七糟\C#项目\GoWithChat\GoWithChat\obj\x86\Debug\GoWithChat.csprojResolveAssemblyReference.cache
