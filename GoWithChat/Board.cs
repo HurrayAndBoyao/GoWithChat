@@ -50,9 +50,12 @@ namespace GoWithChat
         public String[] friendlist;
         public Thread thread;
         public int apply_fight = 0;
+        public int shumu = -1;
         public int[, ,] history = new int[19, 19, 400];
         public int[] step_x = new int[400];
         public int[] step_y = new int[400];
+        public int black = 0;
+        public int white = 0;
        // public 
 
         public String friendFightInfo;
@@ -95,6 +98,7 @@ namespace GoWithChat
                         this.pictureBox[i, j,k].TabIndex = 0;
                         this.pictureBox[i, j,k].BackColor = Color.Transparent;
                         this.pictureBox[i, j,k].TabStop = false;
+                        this.pictureBox[i,j,k].MouseUp += new System.Windows.Forms.MouseEventHandler(this.MouseUpForPic);
                         if (k == 0)
                         {
                             this.pictureBox[i, j, k].Image = img_black;
@@ -256,6 +260,62 @@ namespace GoWithChat
             p.Y = (y - 20) / 23;
             return p;
         }
+        private void MouseUpForPic(Object sender,MouseEventArgs e)
+        {
+            int x, y;
+            //if (shumu == -1) return;
+            PictureBox p = sender as PictureBox;
+            //MessageBox.Show(unit[0,0].color.ToString() + "hehe");
+            //MessageBox.Show(p.Name);
+            x = p.Name[11] - '0';
+            if (p.Name[12] != ']')
+            {
+                x = x * 10 + (p.Name[12] - '0');
+                y = p.Name[15] - '0';
+                if (p.Name[16] != ']')
+                {
+                    y = y * 10 + (p.Name[16] - '0');
+                }
+            } 
+            else
+            {
+                y = p.Name[14] - '0';
+                if (p.Name[15] != ']')
+                {
+                    y = y * 10 + (p.Name[15] - '0');
+                }
+            }
+            x = x - 1;
+            y = y - 1;
+            //MessageBox.Show("" + x + " " + y);
+             if (shumu == 0)
+                {
+                    //MessageBox.Show(unit[x, y].color.ToString());
+                    if (unit[x,y].color == 0)
+                    {
+                        unit[x, y].color = 1;
+                        pictureBox[x, y, 0].Hide();
+                        pictureBox[x, y, 1].Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("请点击您自己的棋！");
+                    }
+                }
+                else if (shumu == 1)
+                {
+                    if (unit[x, y].color == 1)
+                    {
+                        unit[x, y].color = 0;
+                        pictureBox[x, y, 1].Hide();
+                        pictureBox[x, y, 0].Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("请点击您自己的棋！");
+                    }
+                }
+        }
         private void MouseUpHandler(Object sender, MouseEventArgs e)
         {
             Point p;
@@ -274,26 +334,37 @@ namespace GoWithChat
 
             if ((p.X >= 0) && (p.X <= 18) && (p.Y >= 0) && (p.Y <= 18))
             {
-                if (go(p.X, p.Y) == 1)//如果此子可落
+                if (shumu == 0)
                 {
-                    if (isonline == 1)
+                        MessageBox.Show("请点击您自己的棋！");
+                }
+                else if (shumu == 1)
+                {
+                        MessageBox.Show("请点击您自己的棋！");
+                }
+                else
+                {
+                    if (go(p.X, p.Y) == 1)//如果此子可落
                     {
-                        s = "0" + (p.X / 10) + (p.X % 10) + (p.Y / 10) + (p.Y % 10);
-                        this.SendFightinfoToServer(s);
-                        //MessageBox.Show();
-                    }
-                    step = step + 1;
-                    if (isonline == 1)
-                    {
-                        this.Refresh();
-                        while (friendFightInfo == null)
+                        if (isonline == 1)
                         {
-                            System.Threading.Thread.Sleep(1);
+                            s = "0" + (p.X / 10) + (p.X % 10) + (p.Y / 10) + (p.Y % 10);
+                            this.SendFightinfoToServer(s);
+                            //MessageBox.Show();
                         }
-                        get_from_server(friendFightInfo);
-                        friendFightInfo = null;
+                        step = step + 1;
+                        if (isonline == 1)
+                        {
+                            this.Refresh();
+                            while (friendFightInfo == null)
+                            {
+                                System.Threading.Thread.Sleep(1);
+                            }
+                            get_from_server(friendFightInfo);
+                            friendFightInfo = null;
+                        }
                     }
-                } 
+                }
             }
         }
         private int go(int x, int y)
@@ -584,6 +655,11 @@ namespace GoWithChat
         {
             int i, j;
             String s;
+            if (step == 0)
+            {
+                MessageBox.Show("第一步棋不能PASS");
+                return;
+            }
             step_x[step] = -1;
             step_y[step] = -1;
             for (i = 0;i < 19;i++)
@@ -602,7 +678,11 @@ namespace GoWithChat
         {
             int i,j;
             String s;
-            if (step < 4) return;
+            if (step < 4)
+            {
+                MessageBox.Show("才下这么几步就想悔棋嘛~");
+                return;
+            }
             step = step - 3;
             for (i = 0;i < 19;i++)
             {
@@ -635,12 +715,118 @@ namespace GoWithChat
 
         private void button3_Click(object sender, EventArgs e)//求和
         {
-
+            MessageBox.Show("抱歉，此功能尚未开放！");
+        }
+        private int dfshehe(int x,int y,int color)
+        {
+            int haha = 0;
+            p[x, y] = true;
+            if (unit[x, y].color == color) haha++;
+            if (unit[x, y].color != -1) return haha;
+            if (x != 0)
+            {
+                if (p[x -1,y] == false)
+                {
+                    haha += dfshehe(x - 1,y,color);
+                }
+            }
+            if (x != 18)
+            {
+                if (p[x + 1, y] == false)
+                {
+                    haha += dfshehe(x + 1, y, color);
+                }
+            }
+            if (y != 0)
+            {
+                if (p[x, y - 1] == false)
+                {
+                    haha+= dfshehe(x, y - 1, color);
+                }
+            }
+            if (y != 18)
+            {
+                if (p[x, y + 1] == false)
+                {
+                    haha+= dfshehe(x, y + 1, color);
+                }
+            }
+            return haha;
+        }
+        public void dfsdianmu(int x,int y)
+        {
+            int i, j;
+            int hehe,haha;
+            if (unit[x, y].color == 0) black = black + 1;
+            if (unit[x, y].color == 1) white = white + 1;
+            if (unit[x, y].color == -1)
+            {
+                for (i = 0; i < 19; i++)
+                {
+                    for (j = 0; j < 19; j++)
+                    {
+                        p[i, j] = false;
+                    }
+                }
+                hehe = dfshehe(x, y, 0);
+                for (i = 0; i < 19; i++)
+                {
+                    for (j = 0; j < 19; j++)
+                    {
+                        p[i, j] = false;
+                    }
+                }
+                haha = dfshehe(x,y,1);
+                //MessageBox.Show(x + " " + y  + " " + hehe + " " + haha);
+                if ((hehe != 0)&&(haha != 0)) return;
+                if ((hehe == 0) && (haha == 0)) return;
+                if (hehe != 0)
+                {
+                    black = black + 1;
+                }
+                if (haha != 0)
+                {
+                    white = white + 1;
+                }
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)//点目
         {
-
+            int i,j;
+            if (isonline == 1)
+            {
+                MessageBox.Show("抱歉，目前联机模式无法点目");
+                return;
+            }
+            if (shumu == 1)
+            {
+                //双方都已经确认局势
+                for (i = 0; i < 19;i++ )
+                {
+                    for (j = 0;j < 19;j++)
+                    {
+                        dfsdianmu(i,j);
+                    }
+                }
+                richTextBox1.Text += "\n黑棋目数：" + black + ",白棋目数：" + white;
+                return;
+            }
+            if (shumu == 0)
+            {
+                MessageBox.Show("请白方点掉自己的死棋（目前此功能无法逆转，请谨慎）");
+                button4.Text = "白棋确认";
+                shumu = 1;
+                return;
+            }
+            button1.Hide();
+            button2.Hide();
+            button3.Hide();
+            button5.Hide();
+            MessageBox.Show("请黑方点掉自己的死棋（目前此功能无法逆转，请谨慎）");
+            button4.Text = "黑棋确认";
+            shumu = 0;
+            //MessageBox.Show(unit[0, 0].color.ToString());
         }
 
         private void button5_Click(object sender, EventArgs e)//聊天
@@ -656,6 +842,7 @@ namespace GoWithChat
                 MessageBox.Show("聊天内容为空，无法发送！");
                 return;
             }
+            MessageBox.Show("抱歉，此功能尚未开放！");
             s = "5" + textBox2.Text;
             //clientmanager.get_from_board(s,friendname);//向服务器发送信息。
         }

@@ -74,7 +74,7 @@ namespace GoWithChat
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(208, 471);
+            this.button3.Location = new System.Drawing.Point(301, 470);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(62, 21);
             this.button3.TabIndex = 2;
@@ -84,7 +84,7 @@ namespace GoWithChat
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(302, 471);
+            this.button4.Location = new System.Drawing.Point(210, 471);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(62, 21);
             this.button4.TabIndex = 3;
