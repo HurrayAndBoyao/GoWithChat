@@ -50,6 +50,9 @@ namespace GoWithChat
         public String[] friendlist;
         public Thread thread;
         public int apply_fight = 0;
+        public int[, ,] history = new int[19, 19, 400];
+        public int[] step_x = new int[400];
+        public int[] step_y = new int[400];
        // public 
 
         public String friendFightInfo;
@@ -280,26 +283,31 @@ namespace GoWithChat
                         //MessageBox.Show();
                     }
                     step = step + 1;
-                    this.Refresh();
-                    while (friendFightInfo == null)
+                    if (isonline == 1)
                     {
-                        System.Threading.Thread.Sleep(1);
+                        this.Refresh();
+                        while (friendFightInfo == null)
+                        {
+                            System.Threading.Thread.Sleep(1);
+                        }
+                        get_from_server(friendFightInfo);
+                        friendFightInfo = null;
                     }
-                    get_from_server(friendFightInfo);
-                    friendFightInfo = null;
                 } 
             }
         }
         private int go(int x, int y)
         {
+            int i,j;
             int color;
             int caneat;
+            String s;
             if (unit[x, y].color != -1) return 0;//如果当前点不是空的，下不了
             color = step % 2;
             caneat = can_eat_other(x, y, color);
             if (caneat != 0)//如果下了能吃别人的棋
             {
-                if (ko(x, y,color) == 1) return 0;//如果落子在劫内，下不了
+                if (ko(x, y,color,caneat) == 1) return 0;//如果落子在劫内，下不了
             }
             else//如果下了不能吃别人的棋
             {
@@ -307,6 +315,9 @@ namespace GoWithChat
             }
             unit[x, y].color = color;
             pictureBox[x, y,color].Show();//显示这个棋子
+            if (color == 0) s = "黑方"; else s = "白方";
+            richTextBox1.Text += "\n" + s + "着子于[" + (x + 1) + "],[" + (y + 1) + "]";
+            //this.Refresh();
             if ((caneat / 1000) == 1)
             {
                 be_eaten(x - 1, y);
@@ -323,7 +334,16 @@ namespace GoWithChat
             {
                 be_eaten(x, y + 1);
             }
-            return 1;
+            for (i = 0; i < 19;i++ )
+            {
+                for (j = 0;j < 19;j++)
+                {
+                    history[i, j, step] = unit[i, j].color;
+                }
+            }
+            step_x[step] = x;
+            step_y[step] = y;
+                return 1;
         }
         private void be_eaten(int x,int y)//处理被吃的子的函数
         {
@@ -370,8 +390,68 @@ namespace GoWithChat
             } 
             return eat;
         }
-        private int ko(int x,int y,int color)//判断是否造成全局同型
+        private int ko(int x,int y,int color,int caneat)//判断是否造成全局同型
         {
+            int i, j,xx,yy;
+            xx = 0;
+            yy = 0;
+            if (step < 3) return 0;
+            if (x != 0)
+            {
+                if (unit[x-1,y].color != 1 - color)
+                {
+                    return 0;
+                }
+            }
+            if (x != 18)
+            {
+                if (unit[x + 1, y].color != 1 - color)
+                {
+                    return 0;
+                }
+            }
+            if (y != 0)
+            {
+                if (unit[x, y - 1].color != 1 - color)
+                {
+                    return 0;
+                }
+            }
+            if (y != 18)
+            {
+                if (unit[x, y + 1].color != 1 - color)
+                {
+                    return 0;
+                }
+            }
+            if (((caneat / 1000) + ((caneat / 100) % 10) + ((caneat / 10) % 10) + (caneat % 10)) != 1)
+            {
+                return 0;
+            }
+            if ((caneat / 1000) == 1)
+            {
+                xx = x - 1;
+                yy = y;
+            }
+            if (((caneat / 100) % 10) == 1)
+            {
+                xx = x + 1;
+                yy = y;
+            }
+            if (((caneat / 10) % 10) == 1)
+            {
+                xx = x;
+                yy = y - 1;
+            }
+            if ((caneat % 10) == 1)
+            {
+                xx = x;
+                yy = y + 1;
+            }
+            if ((step_x[step - 1] == xx) && (step_y[step - 1] == yy))
+            {
+                if (history[x, y, step - 2] == color) return 1;
+            }
             return 0;
         }
         private int dfs_compute(int x,int y,int color)//计算这个点的气
@@ -502,12 +582,55 @@ namespace GoWithChat
 
         private void button1_Click(object sender, EventArgs e)//PASS
         {
-
+            int i, j;
+            String s;
+            step_x[step] = -1;
+            step_y[step] = -1;
+            for (i = 0;i < 19;i++)
+            {
+                for (j = 0;j < 19;j++)
+                {
+                    history[i, j, step] = history[i, j, step - 1];
+                }
+            }
+            if (step % 2 == 0) s= "黑方"; else s = "白方";
+            richTextBox1.Text += "\n" + s + "PASS";
+            step = step + 1;
         }
 
         private void button2_Click(object sender, EventArgs e)//悔棋
         {
-
+            int i,j;
+            String s;
+            if (step < 4) return;
+            step = step - 3;
+            for (i = 0;i < 19;i++)
+            {
+                for (j = 0;j < 19;j++)
+                {
+                    if (history[i,j,step] == -1)
+                    {
+                        unit[i, j].color = -1;
+                        pictureBox[i, j, 0].Hide();
+                        pictureBox[i, j, 1].Hide();
+                    }
+                    if (history[i,j,step] == 0)
+                    {
+                        unit[i, j].color = 0;
+                        pictureBox[i, j, 0].Show();
+                        pictureBox[i, j, 1].Hide();
+                    }
+                    if (history[i,j,step] == 1)
+                    {
+                        unit[i, j].color = 1;
+                        pictureBox[i, j, 0].Hide();
+                        pictureBox[i, j, 1].Show();
+                    }
+                }
+            }
+            if (step % 2 == 0) s = "黑方"; else s = "白棋";
+            richTextBox1.Text += "\n" + s + "悔棋";
+            step = step + 1;
         }
 
         private void button3_Click(object sender, EventArgs e)//求和
